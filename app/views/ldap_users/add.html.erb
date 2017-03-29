@@ -1,0 +1,15 @@
+<% provide(:title,"Add List") %>
+<div class="row">
+  <h2>Add a user to one or more groups.</h2>
+  <div class="col-md-6 col-md-offset-3 jumbotron">
+    <%= form_for(@ldapuser, url: add_path) do |f| %>
+      <%= f.label "First Name" %>
+      <%= f.text_field :fname, class: 'form-control' %>
+      <%= f.label "Last Name" %>
+      <%= f.text_field :lname, class: 'form-control' %>
+      <%= f.label "Group(s)" %>
+      <%= f.text_area :dn, rows: 10, class: 'form-control' %>
+      <%= f.submit "Add", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

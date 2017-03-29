@@ -1,0 +1,12 @@
+<% provide(:title, "Home") %>
+<div class="main">
+  <h2>OpenLDAP Operations</h2>
+  <div class="jumbotron">
+    <p><%= link_to "Add a user to a group", add_path%><p>
+    <p><%= link_to "Create a new user", create_path %></p>
+    <p><%= link_to "Update an existing user's password", update_password_path %></p>
+    <p><%= link_to "Delete an existing user", destroy_path %></p>
+    <p><%= link_to "Remove a user from a group", remove_path %></p>
+    <p><%= link_to "Search for all groups a user belongs to", search_path %></p>
+  </div>
+</div>
