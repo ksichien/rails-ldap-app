@@ -2,8 +2,8 @@
   <h2>Log in</h2>
   <div class="col-md-6 col-md-offset-3 jumbotron">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <%= f.label :email %>
-        <%= f.email_field :email, autofocus: true, class: "form-control" %>
+        <%= f.label :username %>
+        <%= f.email_field :username, autofocus: true, class: "form-control" %>
         <%= f.label :password %>
         <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
         <%= f.label :remember_me, class: "checkbox inline" do %>

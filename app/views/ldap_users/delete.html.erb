@@ -3,8 +3,10 @@
   <h2>Delete an existing user.</h2>
   <div class="col-md-6 col-md-offset-3 jumbotron">
     <%= form_for(@ldapuser, url: destroy_path) do |f| %>
+      <%= f.label "Confirm your ldap password" %>
+      <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
       <%= f.label "First Name" %>
-      <%= f.text_field :fname, class: 'form-control' %>
+      <%= f.text_field :fname, autofocus: true, class: 'form-control' %>
       <%= f.label "Last Name" %>
       <%= f.text_field :lname, class: 'form-control' %>
       <%= f.submit "Delete", class: "btn btn-primary" %>

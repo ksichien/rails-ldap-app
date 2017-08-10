@@ -1,18 +1,20 @@
-class LdapWrapper
+module LdapWrapper
 
   SERVERHOSTNAME = "ldap.example.com"
-  SERVERPASSWORD = "password"
   SERVERDC = "dc=example,dc=com"
+  GROUPOU = "ou=groups"
+  USEROU = "ou=users"
+  EMAIL = "example.com"
 
-  def self.make_ldap
+  def create_ldap_object(user, password)
     ldap = Net::LDAP.new :host => SERVERHOSTNAME,
          :port => 636,
-         :encryption => "simple_tls",
+         :encryption => :simple_tls,
          :base => SERVERDC,
          :auth => {
                :method => :simple,
-               :username => "cn=admin,#{SERVERDC}",
-               :password => SERVERPASSWORD
+               :username => "uid=#{user},#{USEROU},#{SERVERDC}",
+               :password => password
     }
   end
 end

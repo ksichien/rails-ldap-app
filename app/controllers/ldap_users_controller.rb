@@ -7,7 +7,7 @@ class LdapUsersController < ApplicationController
   def add_list
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.add_list(@ldapuser.fname, @ldapuser.lname, @ldapuser.dn)
+      @result = @ldapuser.add_list(@ldapuser.fname, @ldapuser.lname, @ldapuser.dn, retrieve_ldap_username, @ldapuser.password)
       render 'result'
     else
       render 'add'
@@ -21,7 +21,7 @@ class LdapUsersController < ApplicationController
   def create
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.create(@ldapuser.fname, @ldapuser.lname, @ldapuser.dn)
+      @result = @ldapuser.create(@ldapuser.fname, @ldapuser.lname, @ldapuser.dn, retrieve_ldap_username, @ldapuser.password)
       render 'result'
     else
       render 'new'
@@ -35,7 +35,7 @@ class LdapUsersController < ApplicationController
   def destroy
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.destroy(@ldapuser.fname, @ldapuser.lname)
+      @result = @ldapuser.destroy(@ldapuser.fname, @ldapuser.lname, retrieve_ldap_username, @ldapuser.password)
       render 'result'
     else
       render 'delete'
@@ -49,7 +49,7 @@ class LdapUsersController < ApplicationController
   def update
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.update(@ldapuser.fname, @ldapuser.lname)
+      @result = @ldapuser.update(@ldapuser.fname, @ldapuser.lname, retrieve_ldap_username, @ldapuser.password)
       render 'result'
     else
       render 'edit'
@@ -63,7 +63,7 @@ class LdapUsersController < ApplicationController
   def remove_list
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.remove_list(@ldapuser.fname, @ldapuser.lname, @ldapuser.dn)
+      @result = @ldapuser.remove_list(@ldapuser.fname, @ldapuser.lname, @ldapuser.dn, retrieve_ldap_username, @ldapuser.password)
       render 'result'
     else
       render 'remove'
@@ -77,7 +77,7 @@ class LdapUsersController < ApplicationController
   def search_result
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.search(@ldapuser.fname, @ldapuser.lname)
+      @result = @ldapuser.search(@ldapuser.fname, @ldapuser.lname, retrieve_ldap_username, @ldapuser.password)
       render 'result'
     else
       render 'search'
@@ -87,7 +87,6 @@ class LdapUsersController < ApplicationController
 private
 
   def ldap_user_params
-    params.require(:ldap_user).permit(:fname, :lname, :dn)
+    params.require(:ldap_user).permit(:fname, :lname, :dn, :password)
   end
-
 end

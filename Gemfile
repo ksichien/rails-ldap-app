@@ -11,7 +11,8 @@ gem 'coffee-rails',                '4.2.1'
 gem 'jquery-rails',                '4.3.1'
 gem 'turbolinks',                  '5.0.1'
 gem 'jbuilder',                    '2.6.3'
-gem 'devise',                      '4.2.1'
+gem 'devise'
+gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
 
 group :development, :test do
   gem 'byebug',  '9.0.0', platform: :mri

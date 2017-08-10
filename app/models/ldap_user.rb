@@ -1,20 +1,17 @@
 class LdapUser
   include ActiveModel::Model
 
-  attr_accessor :fname, :lname, :dn
+  attr_accessor :fname, :lname, :dn, :password
 
   validates :fname, presence: true, length: { maximum: 255 }
   validates :lname, presence: true, length: { maximum: 255 }
 
-  SERVERLDAP = "dc=example,dc=com"
-  EMAIL = "example.com"
-  GROUPOU = "ou=Groups"
-  USEROU = "ou=Users"
+  include LdapWrapper
 
-  def add_list fname, lname, dn
+  def add_list fname, lname, dn, user, password
     result = ""
 
-    ldap = LdapWrapper.make_ldap
+    ldap = create_ldap_object(user, password)
 
     if dn.empty?
       result = "No changes were made, no lists were given.\n"
@@ -23,7 +20,7 @@ class LdapUser
 
       listarray.each do |l|
         attrdn = process_lists l
-        ldap.add_attribute attrdn, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERLDAP}"
+        ldap.add_attribute attrdn, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
         result << "Operation add #{fname}.#{lname} to\n#{attrdn}\n result: #{ldap.get_operation_result.message}\n"
       end
 
@@ -31,10 +28,10 @@ class LdapUser
     end
   end
 
-  def create fname, lname, dn
+  def create fname, lname, dn, user, password
     result = ""
     pwd = create_ldap_password
-    userdn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERLDAP}"
+    userdn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
 
     result << "Username: #{fname}.#{lname}\n"
     result << "Password: #{pwd[0]}\n\n"
@@ -43,14 +40,12 @@ class LdapUser
     attr = {
       :objectclass => ["inetOrgPerson"],
       :uid => "#{fname}.#{lname}",
-      :cn => "#{fname} #{lname}",
-      :displayName => "#{fname.capitalize} #{lname.capitalize}",
-      :givenName => "#{fname.capitalize}",
+      :cn => "#{fname.capitalize} #{lname.capitalize}",
       :sn => "#{lname.capitalize}",
       :mail => "#{fname}.#{lname}@#{EMAIL}"
     }
 
-    ldap = LdapWrapper.make_ldap
+    ldap = create_ldap_object(user, password)
 
     ldap.add(:dn => userdn, :attributes => attr)
     result << "Operation create user #{fname}.#{lname} result: #{ldap.get_operation_result.message}\n"
@@ -58,18 +53,18 @@ class LdapUser
     ldap.add_attribute userdn, :userPassword, "{CRYPT}#{pwd[1]}"
     result << "Operation set password #{pwd[0]} result: #{ldap.get_operation_result.message}"
 
-    result << add_list(fname, lname, dn)
+    result << add_list(fname, lname, dn, user, password)
 
     result.to_s
   end
 
-  def destroy_user fname, lname
+  def destroy_user fname, lname, user, password
     result = ""
     removeresult = ""
 
     dn = search fname, lname
 
-    ldap = LdapWrapper.make_ldap
+    ldap = create_ldap_object(user, password)
 
     if dn.empty?
       removeresult = "No changes were made, no lists were found.\n"
@@ -79,7 +74,7 @@ class LdapUser
       listarray.each do |l|
         attrdn = l
         ops = [
-          [:delete, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERLDAP}"]
+          [:delete, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"]
         ]
         ldap.modify :dn => attrdn, :operations => ops
         removeresult << "Operation remove #{fname}.#{lname} from\n#{attrdn}\n result: #{ldap.get_operation_result.message}\n"
@@ -90,18 +85,18 @@ class LdapUser
 
     result << removeresult
 
-    ldap.delete :dn => "uid=#{fname}.#{lname},#{USEROU},#{SERVERLDAP}"
+    ldap.delete :dn => "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
     result << "Operation destroy user #{fname}.#{lname} result: #{ldap.get_operation_result.message}\n"
 
     result.to_s
   end
 
-  def update fname, lname
+  def update fname, lname, user, password
     result = ""
     pwd = create_ldap_password
-    userdn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERLDAP}"
+    userdn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
 
-    ldap = LdapWrapper.make_ldap
+    ldap = create_ldap_object(user, password)
 
     ops = [
       [:replace, :userPassword, "{CRYPT}#{pwd[1]}"]
@@ -113,10 +108,10 @@ class LdapUser
     result.to_s
   end
 
-  def remove_list fname, lname, dn
+  def remove_list fname, lname, dn, user, password
     result = ""
 
-    ldap = LdapWrapper.make_ldap
+    ldap = create_ldap_object(user, password)
 
     if dn.empty?
       result = "No changes were made, no lists were given.\n"
@@ -126,7 +121,7 @@ class LdapUser
       for l in grouparray do
         attrdn = process_lists l
         ops = [
-          [:delete, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERLDAP}"]
+          [:delete, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"]
         ]
         ldap.modify :dn => attrdn, :operations => ops
         result << "Operation remove #{fname}.#{lname} from\n#{attrdn}\n result: #{ldap.get_operation_result.message}\n"
@@ -136,13 +131,13 @@ class LdapUser
     end
   end
 
-  def search fname, lname
+  def search fname, lname, user, password
     result = ""
 
-    ldap = LdapWrapper.make_ldap
+    ldap = create_ldap_object(user, password)
 
-    filter = Net::LDAP::Filter.eq("member", "uid=#{fname}.#{lname},#{USEROU},#{SERVERLDAP}")
-    ldap.search( :base => SERVERLDAP, :filter => filter, :return_result => true ) do |entry|
+    filter = Net::LDAP::Filter.eq("member", "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}")
+    ldap.search( :base => SERVERDC, :filter => filter, :return_result => true ) do |entry|
       result << "#{entry.dn}\n"
     end
 
@@ -169,6 +164,6 @@ private
         path << ",ou=#{l.chomp}"
       end
     end
-    attrdn = "cn=#{path},#{GROUPOU},#{SERVERLDAP}"
+    attrdn = "cn=#{path},#{GROUPOU},#{SERVERDC}"
   end
 end
