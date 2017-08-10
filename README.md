@@ -1,24 +1,12 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a personal project where I created a Ruby on Rails application for simplying modifications to my local LDAP server.
+A user can log in with their LDAP mail address and password, which the application will also use to modify the LDAP tree.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+There are various operations available:
+- Add a user to group
+- Create a new user
+- Change an existing user's password
+- Delete an existing user
+- Remove a user from a group
+- Search for all groups a user belongs to
