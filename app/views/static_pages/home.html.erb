@@ -1,20 +1,39 @@
 <% provide(:title, "Home") %>
 <div class="main">
-  <h3>OpenLDAP Group Operations</h3>
+  <h3>Group Operations</h3>
   <div class="jumbotron">
-    <p><%= link_to "Add a user to multiple groups", add_path%><p>
-    <p><%= link_to "Add multiple users to a group", add_multiple_path%><p>
-    <p><%= link_to "Delete an existing group", destroy_group_path %></p>
-    <p><%= link_to "Remove a user from multiple groups", remove_path %></p>
-    <p><%= link_to "Remove multiple users from a group", remove_multiple_path%><p>
+    <div class="row">
+      <div class="col-md-6">
+        <p><%= link_to "Add a user to multiple groups", add_path%><p>
+      </div>
+      <div class="col-md-6">
+        <p><%= link_to "Add multiple users to a group", add_multiple_path%><p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <p></p>
+      </div>
+      <div class="col-md-6">
+        <p><%= link_to "Delete an existing group", destroy_group_path %></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <p><%= link_to "Remove a user from multiple groups", remove_path %></p>
+      </div>
+      <div class="col-md-6">
+        <p><%= link_to "Remove multiple users from a group", remove_multiple_path%><p>
+      </div>
+    </div>
   </div>
-  <h3>OpenLDAP User Operations</h3>
+  <h3>User Operations</h3>
   <div class="jumbotron">
     <p><%= link_to "Create a new user", create_path %></p>
     <p><%= link_to "Change a user's password", update_path %></p>
     <p><%= link_to "Delete an existing user", destroy_path %></p>
   </div>
-  <h3>OpenLDAP General Operations</h3>
+  <h3>General Operations</h3>
   <div class="jumbotron">
     <p><%= link_to "Search across the entire directory for a group or user", search_path %></p>
     <p><%= link_to "Search for all group memberships of a user", search_group_path %></p>
