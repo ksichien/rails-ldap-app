@@ -1,8 +1,9 @@
 <% provide(:title,"Change Password") %>
 <div class="row">
-  <h2>Change an existing user's password.</h2>
+  <h2>Change a user's password</h2>
   <div class="col-md-6 col-md-offset-3 jumbotron">
-    <%= form_for(@ldapuser, url: update_password_path) do |f| %>
+    <%= form_for(@ldapuser, url: update_path) do |f| %>
+      <%= render 'shared/ldap_user_error_messages', object: @ldapuser %>
       <%= f.label "Confirm your ldap password" %>
       <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
       <%= f.label "First Name" %>

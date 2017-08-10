@@ -1,14 +1,16 @@
-<% provide(:title,"Search") %>
+<% provide(:title,"Multiple Add Group") %>
 <div class="row">
-  <h2>Search across the entire directory for a group or user</h2>
+  <h2>Add multiple users to a group</h2>
   <div class="col-md-6 col-md-offset-3 jumbotron">
-    <%= form_for(@ldapuser, url: search_path) do |f| %>
+    <%= form_for(@ldapuser, url: add_multiple_path) do |f| %>
       <%= render 'shared/ldap_user_error_messages', object: @ldapuser %>
       <%= f.label "Confirm your ldap password" %>
       <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
-      <%= f.label "Group or User" %>
+      <%= f.label "Group" %>
       <%= f.text_field :group_name, autofocus: true, class: 'form-control' %>
-      <%= f.submit "Search", class: "btn btn-primary" %>
+      <%= f.label "Users" %>
+      <%= f.text_area :group_members, maxlength: 8192, rows: 10, class: 'form-control' %>
+      <%= f.submit "Add", class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>

@@ -17,5 +17,8 @@
 .byebug_history
 
 # Ignore database and secrets
+/app/controllers/application_controller.rb
+/app/models/ldap_wrapper.rb
 /config/database.yml
+/config/ldap.yml
 /config/secrets.yml

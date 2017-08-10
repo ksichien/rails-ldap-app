@@ -1,8 +1,8 @@
-<% provide(:title,"Remove Group") %>
+<% provide(:title,"Search Membership") %>
 <div class="row">
-  <h2>Remove a user from a group</h2>
+  <h2>Search for all group memberships of a user</h2>
   <div class="col-md-6 col-md-offset-3 jumbotron">
-    <%= form_for(@ldapuser, url: remove_path) do |f| %>
+    <%= form_for(@ldapuser, url: search_group_path) do |f| %>
       <%= render 'shared/ldap_user_error_messages', object: @ldapuser %>
       <%= f.label "Confirm your ldap password" %>
       <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
@@ -10,9 +10,7 @@
       <%= f.text_field :fname, autofocus: true, class: 'form-control' %>
       <%= f.label "Last Name" %>
       <%= f.text_field :lname, class: 'form-control' %>
-      <%= f.label "Groups" %>
-      <%= f.text_area :dn, maxlength: 8192, rows: 10, class: 'form-control' %>
-      <%= f.submit "Remove", class: "btn btn-primary" %>
+      <%= f.submit "Search", class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>

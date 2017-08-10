@@ -27,7 +27,7 @@ authorizations: &AUTHORIZATIONS
 
 ## Environment
 
-development:
+test:
   host: ldap.example.com
   port: 636
   attribute: mail
