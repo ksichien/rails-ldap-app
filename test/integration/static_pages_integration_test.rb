@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StaticPagesControllerTest < ActionDispatch::IntegrationTest
+class StaticPagesIntegrationTest < ActionDispatch::IntegrationTest
 
   include Devise::Test::IntegrationHelpers
 
@@ -11,6 +11,7 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get root" do
     get root_path
+    assert_template 'home'
     assert_response :success
   end
 end

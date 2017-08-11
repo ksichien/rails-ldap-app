@@ -17,6 +17,7 @@ gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ld
 group :development, :test do
   gem 'byebug',  '9.0.0', platform: :mri
   gem 'rspec-rails',               '~> 3.6'
+  gem 'factory_girl_rails',        '~> 4.8.0'
 end
 
 group :development do

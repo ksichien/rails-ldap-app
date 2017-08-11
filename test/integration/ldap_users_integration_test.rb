@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LdapUsersControllerTest < ActionDispatch::IntegrationTest
+class LdapUsersIntegrationTest < ActionDispatch::IntegrationTest
 
   include Devise::Test::IntegrationHelpers
 
@@ -57,6 +57,12 @@ class LdapUsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should get result" do
+    get result_path
+    assert_template 'ldap_users/result'
+    assert_response :success
+  end
+
   test "should get search" do
     get search_path
     assert_template 'ldap_users/search'
@@ -68,11 +74,4 @@ class LdapUsersControllerTest < ActionDispatch::IntegrationTest
     assert_template 'ldap_users/search_group'
     assert_response :success
   end
-
-  test "should get result" do
-    get result_path
-    assert_template 'ldap_users/result'
-    assert_response :success
-  end
-
 end
