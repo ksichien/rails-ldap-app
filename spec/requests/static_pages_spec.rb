@@ -19,7 +19,7 @@ RSpec.describe "StaticPages", type: :request do
       expect(response).to be_successful
       expect(response).to have_http_status(200)
     end
-    it "displays the home template" do
+    it "renders the home template" do
       get root_path
       expect(response).to render_template("home")
     end
