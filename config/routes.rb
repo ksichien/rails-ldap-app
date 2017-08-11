@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, :skip => [:registrations]
+  devise_for :users, :skip => [:passwords]
   root 'static_pages#home'
   get  'add',                     to: 'ldap_users#add'
   post 'add',                     to: 'ldap_users#add_group'
