@@ -8,5 +8,18 @@ RSpec.describe "StaticPages", type: :request do
       expect(response).to redirect_to(new_user_session_path)
       expect(response).to have_http_status(302)
     end
+    it "retrieves the home page" do
+      user = build(:jd)
+      sign_in user
+      get root_path
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+    end
+    it "displays the home template" do
+      user = build(:jd)
+      sign_in user
+      get root_path
+      expect(response).to render_template("home")
+    end
   end
 end

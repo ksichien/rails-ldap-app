@@ -7,7 +7,7 @@ RSpec.describe "Sessions", type: :request do
       expect(response).to be_success
       expect(response).to have_http_status(200)
     end
-    it "renders the new registration template" do
+    it "renders the new session template" do
       get new_user_session_path
       expect(response).to render_template("devise/sessions/new")
     end
