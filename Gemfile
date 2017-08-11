@@ -16,6 +16,7 @@ gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ld
 
 group :development, :test do
   gem 'byebug',  '9.0.0', platform: :mri
+  gem 'rspec-rails',               '~> 3.6'
 end
 
 group :development do
@@ -28,6 +29,7 @@ end
 group :test do
   gem 'guard'
   gem 'guard-minitest'
+  gem 'rails-controller-testing'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
