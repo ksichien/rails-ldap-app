@@ -2,11 +2,26 @@ require 'rails_helper'
 
 RSpec.describe "LdapUsers", type: :request do
   include Devise::Test::IntegrationHelpers
-  describe "GET /add" do
+  describe "GET /add before log in" do
     it "redirects to users sign in page" do
       get add_path
       expect(response).to redirect_to(new_user_session_path)
       expect(response).to have_http_status(302)
+    end
+  end
+  describe "GET /add after log in" do
+    before(:each) do
+      user = build(:jd)
+      sign_in user
+    end
+    it "retrieves the add page" do
+      get add_path
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+    end
+    it "renders the add template" do
+      get add_path
+      expect(response).to render_template("add")
     end
   end
   describe "GET /add_multiple" do
