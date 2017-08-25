@@ -14,7 +14,7 @@ RSpec.describe "StaticPages", type: :request do
       user = build(:jd)
       sign_in user
     end
-    it "retrieves the home page" do
+    it "retrieves the root path" do
       get root_path
       expect(response).to be_successful
       expect(response).to have_http_status(200)
