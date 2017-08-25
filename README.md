@@ -1,4 +1,4 @@
-# README
+# rails-ldap-app
 
 This is a Ruby on Rails application for creating, modifying and deleting groups and users on an OpenLDAP server.
 A user can log in with their LDAP mail address and password.
