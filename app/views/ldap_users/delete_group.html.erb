@@ -5,9 +5,9 @@
     <%= form_for(@ldapuser, url: destroy_group_path) do |f| %>
       <%= render 'shared/ldap_user_error_messages', object: @ldapuser %>
       <%= f.label "Confirm your ldap password" %>
-      <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
       <%= f.label "Group" %>
-      <%= f.text_field :group_name, class: 'form-control' %>
+      <%= f.text_field :group_name, class: "form-control" %>
       <%= f.submit "Delete", class: "btn btn-primary" %>
     <% end %>
   </div>

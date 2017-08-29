@@ -5,11 +5,11 @@
     <%= form_for(@ldapuser, url: remove_multiple_path) do |f| %>
       <%= render 'shared/ldap_user_error_messages', object: @ldapuser %>
       <%= f.label "Confirm your ldap password" %>
-      <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
       <%= f.label "Group" %>
-      <%= f.text_field :group_name, autofocus: true, class: 'form-control' %>
+      <%= f.text_field :group_name, autofocus: true, class: "form-control" %>
       <%= f.label "Users" %>
-      <%= f.text_area :group_members, maxlength: 8192, rows: 10, class: 'form-control' %>
+      <%= f.text_area :group_members, maxlength: 8192, rows: 10, class: "form-control" %>
       <%= f.submit "Remove", class: "btn btn-primary" %>
     <% end %>
   </div>

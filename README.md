@@ -10,6 +10,7 @@ Since its creation, I've continuously expanded on it and it now encompasses most
 The available operations are listed below:
 - Add a user to multiple groups
 - Add multiple users to a group
+- Create a new group
 - Create a new user
 - Change a user's password
 - Delete an existing group

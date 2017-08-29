@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   post 'add_multiple',            to: 'ldap_users#add_group_multiple'
   get  'create',                  to: 'ldap_users#new'
   post 'create',                  to: 'ldap_users#create'
+  get  'create_group',            to: 'ldap_users#new_group'
+  post 'create_group',            to: 'ldap_users#create_group'
   get  'destroy',                 to: 'ldap_users#delete'
   post 'destroy',                 to: 'ldap_users#destroy'
   get  'destroy_group',           to: 'ldap_users#delete_group'

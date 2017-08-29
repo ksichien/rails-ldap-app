@@ -5,11 +5,11 @@
     <%= form_for(@ldapuser, url: search_group_path) do |f| %>
       <%= render 'shared/ldap_user_error_messages', object: @ldapuser %>
       <%= f.label "Confirm your ldap password" %>
-      <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
       <%= f.label "First Name" %>
-      <%= f.text_field :fname, autofocus: true, class: 'form-control' %>
+      <%= f.text_field :fname, autofocus: true, class: "form-control" %>
       <%= f.label "Last Name" %>
-      <%= f.text_field :lname, class: 'form-control' %>
+      <%= f.text_field :lname, class: "form-control" %>
       <%= f.submit "Search", class: "btn btn-primary" %>
     <% end %>
   </div>

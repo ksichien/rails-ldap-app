@@ -9,7 +9,7 @@ class StaticPagesIntegrationTest < ActionDispatch::IntegrationTest
     sign_in @user
   end
 
-  test "should get root" do
+  test 'should get root' do
     get root_path
     assert_template 'home'
     assert_response :success

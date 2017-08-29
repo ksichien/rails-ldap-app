@@ -42,6 +42,20 @@ class LdapUsersController < ApplicationController
     end
   end
 
+  def new_group
+    @ldapuser = LdapUser.new
+  end
+
+  def create_group
+    @ldapuser = LdapUser.new(ldap_user_params)
+    if @ldapuser.valid?
+      @result = @ldapuser.create_group(@ldapuser.group_name, @ldapuser.group_members, retrieve_ldap_username, @ldapuser.password)
+      render 'result'
+    else
+      render 'new_group'
+    end
+  end
+
   def delete
     @ldapuser = LdapUser.new
   end

@@ -37,7 +37,7 @@ test:
   ssl: simple_tls
   # <<: *AUTHORIZATIONS
 
-test:
+development:
   host: ldap.example.com
   port: 636
   attribute: mail

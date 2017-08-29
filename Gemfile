@@ -12,7 +12,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 gem 'devise',                      '~> 4.3.0'
-gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
+gem 'devise_ldap_authenticatable', :git => 'git://github.com/cschiewek/devise_ldap_authenticatable.git'
 
 group :development, :test do
   gem 'byebug',  '9.0.0', platform: :mri
