@@ -22,3 +22,7 @@
 /config/initializers/devise.rb
 /config/database.yml
 /config/secrets.yml
+
+# Ignore application configuration
+/config/application.yml
+/config/ldap.yml
