@@ -21,5 +21,4 @@
 /app/models/ldap_wrapper.rb
 /config/initializers/devise.rb
 /config/database.yml
-/config/ldap.yml
 /config/secrets.yml

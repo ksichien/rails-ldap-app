@@ -109,6 +109,10 @@ class LdapUser
       removeresult.to_s
     end
     result << removeresult
+    filter = Net::LDAP::Filter.eq('uid', "#{fname}.#{lname}")
+    ldap.search( :base => SERVERDC, :filter => filter, :attributes => ['*','+'], :return_result => true ) do |entry|
+      result << mail_uuid(fname, lname, entry.entryUUID)
+    end
     ldap.delete :dn => "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
     result << "Operation destroy user #{fname}.#{lname} result: #{ldap.get_operation_result.message}\n"
     result.to_s
@@ -197,6 +201,16 @@ private
     pwd = SecureRandom.urlsafe_base64(20)
     hashpwd = pwd.crypt('$6$' + SecureRandom.random_number(36 ** 8).to_s(36))
     pwdarray = [pwd, hashpwd]
+  end
+
+  def mail_uuid fname, lname, uuid
+    msg = "Subject: Account #{fname}.#{lname} has been deleted.\n\nThe account's entryUUID is #{uuid}."
+    smtp = Net::SMTP.new 'smtp.example.com', 587
+    smtp.enable_starttls
+    smtp.start('example.com', 'rails-ldap-app', Figaro.env.ldap_admin_password, :login) do
+      smtp.send_message(msg, 'rails-ldap-app@example.com', 'helpdesk@example.com')
+    end
+    return "Mail sent to helpdesk@example.com with entry UUID.\n"
   end
 
   def process_groups g

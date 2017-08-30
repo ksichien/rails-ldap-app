@@ -33,7 +33,7 @@ test:
   attribute: mail
   base: ou=users,dc=example,dc=com
   admin_user: cn=admin,dc=example,dc=com
-  admin_password: admin_password
+  admin_password: <%= Figaro.env.ldap_admin_password %>
   ssl: simple_tls
   # <<: *AUTHORIZATIONS
 
@@ -43,7 +43,7 @@ development:
   attribute: mail
   base: ou=users,dc=example,dc=com
   admin_user: cn=admin,dc=example,dc=com
-  admin_password: admin_password
+  admin_password:  <%= Figaro.env.ldap_admin_password %>
   ssl: simple_tls
   # <<: *AUTHORIZATIONS
 
@@ -53,6 +53,6 @@ production:
   attribute: mail
   base: ou=users,dc=example,dc=com
   admin_user: cn=admin,dc=example,dc=com
-  admin_password: admin_password
+  admin_password:  <%= Figaro.env.ldap_admin_password %>
   ssl: simple_tls
   # <<: *AUTHORIZATIONS
