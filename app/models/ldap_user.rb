@@ -12,9 +12,9 @@ class LdapUser
     result = ''
     ldap = create_ldap_object(user, password)
     if dn.empty?
-      result = 'No changes were made, no groups were given.\n'
+      result = "No changes were made, no groups were given.\n"
     else
-      grouparray = dn.split('\n')
+      grouparray = dn.split("\n")
       grouparray.each do |g|
         attrdn = process_groups g
         ldap.add_attribute attrdn, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
@@ -27,7 +27,7 @@ class LdapUser
   def add_group_multiple group_members, group_name, user, password
     result = ''
     ldap = create_ldap_object(user, password)
-    members = group_members.split('\n')
+    members = group_members.split("\n")
     memberarray = []
     members.each do |m|
       userdn = "uid=#{m.chomp},#{USEROU},#{SERVERDC}"
@@ -51,7 +51,7 @@ class LdapUser
     result << "Password: #{pwd[0]}\n\n"
     result << "All operation results below for diagnostics:\n"
     attr = {
-      :objectclass => ["inetOrgPerson"],
+      :objectclass => ['inetOrgPerson'],
       :uid => "#{fname}.#{lname}",
       :cn => "#{fname.capitalize} #{lname.capitalize}",
       :sn => "#{lname.capitalize}",
@@ -88,16 +88,15 @@ class LdapUser
     result.to_s
   end
 
-
   def destroy fname, lname, user, password
     result = ''
     removeresult = ''
     dn = search_group(fname, lname, user, password)
     ldap = create_ldap_object(user, password)
     if dn.empty?
-      removeresult = 'No changes were made, no groups were found.\n'
+      removeresult = "No changes were made, no groups were found.\n"
     else
-      grouparray = dn.split('\n')
+      grouparray = dn.split("\n")
       grouparray.each do |g|
         groupdn = g
         ops = [
@@ -140,7 +139,7 @@ class LdapUser
     result = ''
     ldap = create_ldap_object(user, password)
     if dn.empty?
-      result = 'No changes were made, no groups were given.\n'
+      result = "No changes were made, no groups were given.\n"
     else
       grouparray = dn.split("\n")
       for g in grouparray do
@@ -205,12 +204,12 @@ private
 
   def mail_uuid fname, lname, uuid
     msg = "Subject: Account #{fname}.#{lname} has been deleted.\n\nThe account's entryUUID is #{uuid}."
-    smtp = Net::SMTP.new 'smtp.example.com', 587
+    smtp = Net::SMTP.new "smtp.#{Figaro.env.domain}", 587
     smtp.enable_starttls
-    smtp.start('example.com', 'rails-ldap-app', Figaro.env.ldap_admin_password, :login) do
-      smtp.send_message(msg, 'rails-ldap-app@example.com', 'helpdesk@example.com')
+    smtp.start("#{Figaro.env.domain}", Figaro.env.ldap_mail_user, Figaro.env.ldap_mail_password, :login) do
+      smtp.send_message(msg, "#{Figaro.env.ldap_mail_user}@#{Figaro.env.domain}", "#{Figaro.env.helpdesk}@#{Figaro.env.domain}")
     end
-    return "Mail sent to helpdesk@example.com with entry UUID.\n"
+    return "Mail sent to #{Figaro.env.helpdesk}@#{Figaro.env.domain} with entry UUID.\n"
   end
 
   def process_groups g
@@ -229,7 +228,7 @@ private
   end
 
   def process_users g
-    users = g.split('\n')
+    users = g.split("\n")
     userarray = []
     users.each do |m|
       userdn = "uid=#{m.chomp},#{USEROU},#{SERVERDC}"

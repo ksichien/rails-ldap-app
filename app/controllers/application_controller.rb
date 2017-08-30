@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   def retrieve_ldap_username
     if user_signed_in?
-      current_user.username.gsub!('@example.com','')
+      current_user.username.gsub!("@#{Figaro.env.domain}",'')
     end
   end
 

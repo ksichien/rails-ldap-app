@@ -10,4 +10,18 @@
 #   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
 #   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
 
-ldap_admin_password: password
+# Used for binding to the ldap server
+ldap_bind_dn: cn=rails-ldap-bind,ou=services,dc=example,dc=com
+ldap_bind_password: bind_password
+
+# Used for mailing a deleted user's entryUUID
+ldap_mail_user: rails-ldap-mail
+ldap_mail_password: mail_password
+
+# Used as recipient of the emails
+helpdesk_user: helpdesk
+domain: example.com
+
+# Used for search operations
+group_search_base: ou=group,dc=example,dc=com
+user_search_base: ou=users,dc=example,dc=com
