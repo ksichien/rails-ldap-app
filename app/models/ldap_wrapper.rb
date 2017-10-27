@@ -1,10 +1,10 @@
 module LdapWrapper
 
-  SERVERHOSTNAME = 'ldap.example.com'
-  SERVERDC = 'dc=example,dc=com'
+  SERVERHOSTNAME = 'ldap.vandelayindustries.com'
+  SERVERDC = 'dc=internal,dc=vandelayindustries,dc=com'
   GROUPOU = 'ou=groups'
   USEROU = 'ou=users'
-  EMAIL = 'example.com'
+  EMAIL = 'vandelayindustries.com'
 
   def create_ldap_object(user, password)
     ldap = Net::LDAP.new :host => SERVERHOSTNAME,
