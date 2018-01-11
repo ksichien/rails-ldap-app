@@ -1,7 +1,7 @@
 module LdapWrapper
 
   SERVERHOSTNAME = 'ldap.vandelayindustries.com'
-  SERVERDC = 'dc=internal,dc=vandelayindustries,dc=com'
+  SERVERDC = 'dc=ldap,dc=vandelayindustries,dc=com'
   GROUPOU = 'ou=groups'
   USEROU = 'ou=users'
   EMAIL = 'vandelayindustries.com'
