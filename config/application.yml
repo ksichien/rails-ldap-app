@@ -11,7 +11,7 @@
 #   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
 
 # Used for binding to the ldap server
-ldap_bind_dn: cn=rails-ldap-bind,ou=services,dc=ldap,dc=vandelayindustries,dc=com
+ldap_bind_dn: cn=rails_ldap_bind,ou=services,dc=ldap,dc=vandelayindustries,dc=com
 ldap_bind_password: bind_password
 
 # Used for mailing a deleted user's entryUUID

@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails',                       '~> 5.0.5'
 gem 'bootstrap-sass'
-gem 'mysql2'
+gem 'sqlite3'
 gem 'puma'
 gem 'sass-rails'
 gem 'uglifier'
