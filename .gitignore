@@ -4,12 +4,6 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-# Ignore Gemfile.lock.
-Gemfile.lock
-
-# Ignore all sqlite3 files.
-*.sqlite3
-
 # Ignore bundler config.
 /.bundle
 
@@ -22,7 +16,7 @@ Gemfile.lock
 # Ignore Byebug command history file.
 .byebug_history
 
-# Ignore database and secrets
+# Ignore devise, database and secrets.
 /config/initializers/devise.rb
 /config/database.yml
 /config/secrets.yml

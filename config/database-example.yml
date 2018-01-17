@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: rla_development
+
+test:
+  <<: *default
+  database: rla_test
+
+production:
+  <<: *default
+  database: rla_postgres
+  username: rla_user
+password: <%= ENV['DB_PASS'] %>

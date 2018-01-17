@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 
+ruby                                '~> 2.4.3'
+
 gem 'rails',                        '~> 5.0.6'
 gem 'bootstrap-sass'
-gem 'pg'
+gem 'pg',                           '~> 0.21'
 gem 'puma'
 gem 'sass-rails'
 gem 'uglifier'
