@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails',                       '~> 5.0.5'
+gem 'rails',                        '~> 5.0.6'
 gem 'bootstrap-sass'
-gem 'sqlite3'
+gem 'pg'
 gem 'puma'
 gem 'sass-rails'
 gem 'uglifier'
@@ -12,13 +12,13 @@ gem 'turbolinks'
 gem 'jbuilder'
 gem 'rubysl-net-smtp'
 gem 'figaro'
-gem 'devise',                      '~> 4.3.0'
-gem 'devise_ldap_authenticatable', :git => 'git://github.com/cschiewek/devise_ldap_authenticatable.git'
+gem 'devise',                       '~> 4.3.0'
+gem 'devise_ldap_authenticatable',  :git => 'git://github.com/cschiewek/devise_ldap_authenticatable.git'
 
 group :development, :test do
-  gem 'byebug',  '9.0.0', platform: :mri
-  gem 'rspec-rails',               '~> 3.6'
-  gem 'factory_bot_rails',        '~> 4.8.2'
+  gem 'byebug',                     '9.0.0', platform: :mri
+  gem 'rspec-rails',                '~> 3.6'
+  gem 'factory_bot_rails',          '~> 4.8.2'
 end
 
 group :development do
