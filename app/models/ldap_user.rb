@@ -204,12 +204,12 @@ private
 
   def mail_uuid fname, lname, uuid
     msg = "Subject: Account #{fname}.#{lname} has been deleted.\n\nThe account's entryUUID is #{uuid}."
-    smtp = Net::SMTP.new "smtp.#{Figaro.env.domain}", 587
+    smtp = Net::SMTP.new "smtp.#{Figaro.env.ldap.domain}", 587
     smtp.enable_starttls
-    smtp.start("#{Figaro.env.domain}", Figaro.env.ldap_mail_user, Figaro.env.ldap_mail_password, :login) do
-      smtp.send_message(msg, "#{Figaro.env.ldap_mail_user}@#{Figaro.env.domain}", "#{Figaro.env.helpdesk}@#{Figaro.env.domain}")
+    smtp.start("#{Figaro.env.ldap.domain}", Figaro.env.ldap.mail.user, Figaro.env.ldap.mail.password, :login) do
+      smtp.send_message(msg, "#{Figaro.env.ldap.mail.user}@#{Figaro.env.ldap.domain}", "#{Figaro.env.ldap.helpdesk}@#{Figaro.env.ldap.domain}")
     end
-    return "Mail sent to #{Figaro.env.helpdesk}@#{Figaro.env.domain} with entry UUID.\n"
+    return "Mail sent to #{Figaro.env.ldap.helpdesk}@#{Figaro.env.ldap.domain} with entry UUID.\n"
   end
 
   def process_groups g

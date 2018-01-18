@@ -13,6 +13,6 @@ test:
 
 production:
   <<: *default
-  database: rla_postgres
-  username: rla_user
-password: <%= ENV['DB_PASS'] %>
+  database: rla_production
+  username: rla_production
+  password: <%= ENV['DB_PASS'] %>

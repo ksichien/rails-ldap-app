@@ -1,27 +1,13 @@
-# Add configuration values here, as shown below.
-#
-# pusher_app_id: "2954"
-# pusher_key: 7381a978f7dd7f9a1117
-# pusher_secret: abdc3b896a0ffb85d373
-# stripe_api_key: sk_test_2J0l093xOyW72XUYJHE4Dv2r
-# stripe_publishable_key: pk_test_ro9jV5SNwGb1yYlQfzG17LHK
-#
-# production:
-#   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
-#   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
-
-# Used for binding to the ldap server
-ldap_bind_dn: cn=rails_ldap_bind,ou=services,dc=ldap,dc=vandelayindustries,dc=com
-ldap_bind_password: bind_password
-
-# Used for mailing a deleted user's entryUUID
-ldap_mail_user: rails_ldap_mail
-ldap_mail_password: mail_password
-
-# Used as recipient of the emails
-helpdesk_user: helpdesk
-domain: vandelayindustries.com
-
-# Used for search operations
-group_search_base: ou=group,dc=ldap,dc=vandelayindustries,dc=com
-user_search_base: ou=users,dc=ldap,dc=vandelayindustries,dc=com
+ldap:
+  bind:
+    user: cn=rla,ou=services,dc=ldap,dc=vandelayindustries,dc=com
+    password: ldap_password
+  domain: vandelayindustries.com
+  helpdesk: helpdesk
+  mail:
+    user: rla_mail
+    password: mail_password
+  port: 636
+  search_base:
+    groups: ou=groups,dc=ldap,dc=vandelayindustries,dc=com
+    users: ou=users,dc=ldap,dc=vandelayindustries,dc=com

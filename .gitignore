@@ -16,11 +16,7 @@
 # Ignore Byebug command history file.
 .byebug_history
 
-# Ignore devise, database and secrets.
-/config/initializers/devise.rb
-/config/database.yml
-/config/secrets.yml
-
-# /app/models/ldap_wrapper.rb
+# Ignore database, devise and secrets.
 # /config/initializers/devise.rb
-# /config/application.yml
+# /config/database.yml
+# /config/secrets.yml

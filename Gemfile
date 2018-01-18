@@ -3,17 +3,17 @@ source 'https://rubygems.org'
 ruby                                '~> 2.4.3'
 
 gem 'rails',                        '~> 5.0.6'
-gem 'bootstrap-sass'
 gem 'pg',                           '~> 0.21'
 gem 'puma'
 gem 'sass-rails'
+gem 'bootstrap-sass'
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
-gem 'rubysl-net-smtp'
 gem 'figaro'
+gem 'rubysl-net-smtp'
 gem 'devise',                       '~> 4.3.0'
 gem 'devise_ldap_authenticatable',  :git => 'git://github.com/cschiewek/devise_ldap_authenticatable.git'
 
@@ -31,8 +31,7 @@ group :development do
 end
 
 group :test do
-  gem 'guard'
-  gem 'guard-minitest'
+  gem 'minitest-rails'
   gem 'rails-controller-testing'
 end
 
