@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
 
   validates :username, presence: true, uniqueness: true
 
-  before_validation :get_ldap_email
-  def get_ldap_email
+  before_validation :ldap_before_save
+  def ldap_before_save
     self.email = Devise::LDAP::Adapter.get_ldap_param(self.username,'mail').first
   end
 

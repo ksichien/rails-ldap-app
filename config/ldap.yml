@@ -2,36 +2,26 @@
 
 authorizations: &AUTHORIZATIONS
   allow_unauthenticated_bind: false
-  group_base: <%= Figaro.env.ldap.search_base.groups %>
+  group_base: <%= Figaro.env.ldap_search_base_groups %>
 
 ## Environment
 
-test:
-  host: ldap.<%= Figaro.env.ldap.domain %>
-  port: <%= Figaro.env.ldap.port %>
-  attribute: mail
-  base: <%= Figaro.env.ldap.search_base.users %>
-  admin_user: <%= Figaro.env.ldap.bind.user %>
-  admin_password: <%= Figaro.env.ldap.bind.password %>
-  ssl: simple_tls
-  # <<: *AUTHORIZATIONS
-
 development:
-  host: ldap.<%= Figaro.env.ldap.domain %>
-  port: <%= Figaro.env.ldap.port %>
+  host: ldap.<%= Figaro.env.domain %>
+  port: <%= Figaro.env.ldap_port %>
   attribute: mail
-  base: <%= Figaro.env.ldap.search_base.users %>
-  admin_user: <%= Figaro.env.ldap.bind.user %>
-  admin_password:  <%= Figaro.env.ldap.bind.password %>
+  base: <%= Figaro.env.ldap_search_base_users %>
+  admin_user: <%= Figaro.env.ldap_bind_user %>
+  admin_password: <%= Figaro.env.ldap_bind_password %>
   ssl: simple_tls
   # <<: *AUTHORIZATIONS
 
 production:
-  host: ldap.<%= Figaro.env.ldap.domain %>
-  port: <%= Figaro.env.ldap.port %>
+  host: ldap.<%= Figaro.env.domain %>
+  port: <%= Figaro.env.ldap_port %>
   attribute: mail
-  base: <%= Figaro.env.ldap.search_base.users %>
-  admin_user: <%= Figaro.env.ldap.bind.user %>
-  admin_password:  <%= Figaro.env.ldap.bind.password %>
+  base: <%= Figaro.env.ldap_search_base_users %>
+  admin_user: <%= Figaro.env.ldap_bind_user %>
+  admin_password: <%= Figaro.env.ldap_bind_password %>
   ssl: simple_tls
   # <<: *AUTHORIZATIONS

@@ -1,13 +1,9 @@
-ldap:
-  bind:
-    user: cn=rla,ou=services,dc=ldap,dc=vandelayindustries,dc=com
-    password: ldap_password
-  domain: vandelayindustries.com
-  helpdesk: helpdesk
-  mail:
-    user: rla_mail
-    password: mail_password
-  port: 636
-  search_base:
-    groups: ou=groups,dc=ldap,dc=vandelayindustries,dc=com
-    users: ou=users,dc=ldap,dc=vandelayindustries,dc=com
+domain: "vandelayindustries.com"
+ldap_bind_user: "cn=rla,ou=services,dc=ldap,dc=vandelayindustries,dc=com"
+ldap_bind_password: "ldap_password"
+ldap_port: "636"
+ldap_search_base_groups: "ou=groups,dc=ldap,dc=vandelayindustries,dc=com"
+ldap_search_base_users: "ou=users,dc=ldap,dc=vandelayindustries,dc=com"
+mail_helpdesk: "helpdesk"
+mail_user: "rla_mail"
+mail_password: "mail_password"
