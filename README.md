@@ -7,6 +7,8 @@ The application will perform all requested operations with the user's LDAP accou
 This project is the final step in the process to simplify OpenLDAP user creation.
 Since its creation, I've continuously expanded on it and it now encompasses most LDAP operations.
 
+## Overview
+
 The available operations are listed below:
 - Add a user to multiple groups
 - Add multiple users to a group
