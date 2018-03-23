@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
-    render :text => exception, :status => 500
+    render text: exception, status: 500
   end
   protect_from_forgery with: :exception
   before_action :authenticate_user!
@@ -10,9 +10,7 @@ class ApplicationController < ActionController::Base
   helper_method :retrieve_ldap_username
 
   def retrieve_ldap_username
-    if user_signed_in?
-      current_user.username.gsub!("@#{Figaro.env.domain}",'')
-    end
+    current_user.username.gsub!("@#{Figaro.env.domain}", '') if user_signed_in?
   end
 
   protected

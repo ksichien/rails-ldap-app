@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class StaticPagesIntegrationTest < ActionDispatch::IntegrationTest
-
   include Devise::Test::IntegrationHelpers
 
   def setup

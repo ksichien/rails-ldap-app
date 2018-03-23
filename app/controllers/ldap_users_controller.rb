@@ -1,5 +1,4 @@
 class LdapUsersController < ApplicationController
-
   def add
     @ldapuser = LdapUser.new
   end
@@ -7,7 +6,11 @@ class LdapUsersController < ApplicationController
   def add_group
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.add_group(@ldapuser.fname.downcase, @ldapuser.lname.downcase, @ldapuser.dn, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.add_group(@ldapuser.fname.downcase,
+                                    @ldapuser.lname.downcase,
+                                    @ldapuser.dn,
+                                    retrieve_ldap_username,
+                                    @ldapuser.password)
       render 'result'
     else
       render 'add'
@@ -21,7 +24,10 @@ class LdapUsersController < ApplicationController
   def add_group_multiple
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.add_group_multiple(@ldapuser.group_members, @ldapuser.group_name.downcase, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.add_group_multiple(@ldapuser.group_members,
+                                             @ldapuser.group_name.downcase,
+                                             retrieve_ldap_username,
+                                             @ldapuser.password)
       render 'result'
     else
       render 'add_multiple'
@@ -35,7 +41,11 @@ class LdapUsersController < ApplicationController
   def create
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.create(@ldapuser.fname.downcase, @ldapuser.lname.downcase, @ldapuser.dn, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.create(@ldapuser.fname.downcase,
+                                 @ldapuser.lname.downcase,
+                                 @ldapuser.dn,
+                                 retrieve_ldap_username,
+                                 @ldapuser.password)
       render 'result'
     else
       render 'new'
@@ -49,7 +59,10 @@ class LdapUsersController < ApplicationController
   def create_group
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.create_group(@ldapuser.group_name, @ldapuser.group_members, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.create_group(@ldapuser.group_name,
+                                       @ldapuser.group_members,
+                                       retrieve_ldap_username,
+                                       @ldapuser.password)
       render 'result'
     else
       render 'new_group'
@@ -63,7 +76,10 @@ class LdapUsersController < ApplicationController
   def destroy
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.destroy(@ldapuser.fname.downcase, @ldapuser.lname.downcase, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.destroy(@ldapuser.fname.downcase,
+                                  @ldapuser.lname.downcase,
+                                  retrieve_ldap_username,
+                                  @ldapuser.password)
       render 'result'
     else
       render 'delete'
@@ -77,7 +93,9 @@ class LdapUsersController < ApplicationController
   def destroy_group
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.destroy_group(@ldapuser.group_name.downcase, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.destroy_group(@ldapuser.group_name.downcase,
+                                        retrieve_ldap_username,
+                                        @ldapuser.password)
       render 'result'
     else
       render 'delete_group'
@@ -91,7 +109,10 @@ class LdapUsersController < ApplicationController
   def update
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.update(@ldapuser.fname.downcase, @ldapuser.lname.downcase, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.update(@ldapuser.fname.downcase,
+                                 @ldapuser.lname.downcase,
+                                 retrieve_ldap_username,
+                                 @ldapuser.password)
       render 'result'
     else
       render 'edit'
@@ -105,7 +126,11 @@ class LdapUsersController < ApplicationController
   def remove_group
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.remove_group(@ldapuser.fname.downcase, @ldapuser.lname.downcase, @ldapuser.dn, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.remove_group(@ldapuser.fname.downcase,
+                                       @ldapuser.lname.downcase,
+                                       @ldapuser.dn,
+                                       retrieve_ldap_username,
+                                       @ldapuser.password)
       render 'result'
     else
       render 'remove'
@@ -119,7 +144,10 @@ class LdapUsersController < ApplicationController
   def remove_group_multiple
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.remove_group_multiple(@ldapuser.group_members, @ldapuser.group_name.downcase, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.remove_group_multiple(@ldapuser.group_members,
+                                                @ldapuser.group_name.downcase,
+                                                retrieve_ldap_username,
+                                                @ldapuser.password)
       render 'result'
     else
       render 'remove_multiple'
@@ -133,7 +161,9 @@ class LdapUsersController < ApplicationController
   def search_result
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.search(@ldapuser.group_name.downcase, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.search(@ldapuser.group_name.downcase,
+                                 retrieve_ldap_username,
+                                 @ldapuser.password)
       render 'result'
     else
       render 'search'
@@ -147,17 +177,24 @@ class LdapUsersController < ApplicationController
   def search_group_result
     @ldapuser = LdapUser.new(ldap_user_params)
     if @ldapuser.valid?
-      @result = @ldapuser.search_group(@ldapuser.fname.downcase, @ldapuser.lname.downcase, retrieve_ldap_username, @ldapuser.password)
+      @result = @ldapuser.search_group(@ldapuser.fname.downcase,
+                                       @ldapuser.lname.downcase,
+                                       retrieve_ldap_username,
+                                       @ldapuser.password)
       render 'result'
     else
       render 'search'
     end
   end
 
-private
+  private
 
   def ldap_user_params
-    params.require(:ldap_user).permit(:fname, :lname, :dn, :group_name, :group_members, :password)
+    params.require(:ldap_user).permit(:fname,
+                                      :lname,
+                                      :dn,
+                                      :group_name,
+                                      :group_members,
+                                      :password)
   end
-
 end
