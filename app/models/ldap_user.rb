@@ -7,6 +7,7 @@ class LdapUser
   validates :lname, length: { maximum: 255 }
 
   include LdapConnection
+  include MailHelpdesk
 
   def add_group(fname, lname, dn, user, password)
     result = ''
@@ -49,7 +50,7 @@ class LdapUser
 
   def create(fname, lname, dn, user, password)
     result = ''
-    pwd = create_ldap_password
+    pwd = generate_ldap_password
     userdn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
     result << "Username: #{fname}.#{lname}\n"
     result << "Password: #{pwd[0]}\n\n"
@@ -118,9 +119,9 @@ class LdapUser
     filter = Net::LDAP::Filter.eq('uid', "#{fname}.#{lname}")
     ldap.search(base: SERVERDC,
                 filter: filter,
-                attributes: ['*','+'],
+                attributes: ['*', '+'],
                 return_result: true) do |entry|
-      result << mail_uuid(fname, lname, entry.entryUUID)
+      result << mail_uuid("#{fname}.#{lname}", entry.entryUUID)
     end
     ldap.delete dn: "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
     result << "Operation destroy user #{fname}.#{lname} result: " \
@@ -138,7 +139,7 @@ class LdapUser
   end
 
   def update(fname, lname, user, password)
-    pwd = create_ldap_password
+    pwd = generate_ldap_password
     userdn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
     ldap = login_ldap(user, password)
     ops = [
@@ -214,29 +215,6 @@ class LdapUser
   end
 
   private
-
-  def create_ldap_password
-    pwd = SecureRandom.hex(24)
-    hashpwd = pwd.crypt('$6$' + SecureRandom.random_number(36**8).to_s(36))
-    [pwd, hashpwd]
-  end
-
-  def mail_uuid(fname, lname, uuid)
-    msg = "Subject: Account #{fname}.#{lname} has been deleted.\n\n" \
-          "The account's entryUUID is #{uuid}."
-    smtp = Net::SMTP.new "smtp.#{Figaro.env.domain}", 587
-    smtp.enable_starttls
-    smtp.start(Figaro.env.domain,
-               Figaro.env.mail_user,
-               Figaro.env.mail_password,
-               :login) do
-      smtp.send_message(msg,
-                        "#{Figaro.env.mail_user}@#{Figaro.env.domain}",
-                        "#{Figaro.env.mail_helpdesk}@#{Figaro.env.domain}")
-    end
-    "Mail sent to #{Figaro.env.mail_helpdesk}@#{Figaro.env.domain} " \
-    "with entry UUID.\n"
-  end
 
   def process_groups(group)
     path = ''

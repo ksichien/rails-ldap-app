@@ -5,6 +5,8 @@ module LdapConnection
   USEROU = 'ou=users'.freeze
   EMAIL = 'vandelayindustries.com'.freeze
 
+  private
+
   def ldap_login(user, password)
     Net::LDAP.new host: SERVERHOSTNAME,
                   port: 636,
@@ -15,5 +17,11 @@ module LdapConnection
                     username: "uid=#{user},#{USEROU},#{SERVERDC}",
                     password: password
                   }
+  end
+
+  def generate_ldap_password
+    pwd = SecureRandom.hex(24)
+    hashpwd = pwd.crypt('$6$' + SecureRandom.random_number(36**8).to_s(36))
+    [pwd, hashpwd]
   end
 end
