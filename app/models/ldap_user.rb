@@ -6,11 +6,11 @@ class LdapUser
   validates :fname, length: { maximum: 255 }
   validates :lname, length: { maximum: 255 }
 
-  include LdapWrapper
+  include LdapConnection
 
   def add_group(fname, lname, dn, user, password)
     result = ''
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     if dn.empty?
       result = "No changes were made, no groups were given.\n"
     else
@@ -29,7 +29,7 @@ class LdapUser
 
   def add_group_multiple(group_members, group_name, user, password)
     result = ''
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     members = group_members.split("\n")
     memberarray = []
     members.each do |m|
@@ -61,7 +61,7 @@ class LdapUser
       sn: lname.capitalize,
       mail: "#{fname}.#{lname}@#{EMAIL}"
     }
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     ldap.add(dn: userdn, attributes: attr)
     result << "Operation create user #{fname}.#{lname} result: " \
               "#{ldap.get_operation_result.message}\n"
@@ -82,7 +82,7 @@ class LdapUser
       cn: group_name,
       member: memberarray
     }
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     ldap.add(dn: groupdn, attributes: attr)
     result << "Operation create group #{group_name} result: " \
               "#{ldap.get_operation_result.message}\n"
@@ -97,7 +97,7 @@ class LdapUser
     result = ''
     removeresult = ''
     dn = search_group(fname, lname, user, password)
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     if dn.empty?
       removeresult = "No changes were made, no groups were found.\n"
     else
@@ -129,7 +129,7 @@ class LdapUser
   end
 
   def destroy_group(group_name, user, password)
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     groupdn = process_groups group_name
     ldap.delete dn: groupdn
     result = "Operation destroy group\n#{groupdn}\nresult: " \
@@ -140,7 +140,7 @@ class LdapUser
   def update(fname, lname, user, password)
     pwd = create_ldap_password
     userdn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     ops = [
       [:replace, :userPassword, "{CRYPT}#{pwd[1]}"]
     ]
@@ -152,7 +152,7 @@ class LdapUser
 
   def remove_group(fname, lname, dn, user, password)
     result = ''
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     if dn.empty?
       result = "No changes were made, no groups were given.\n"
     else
@@ -172,7 +172,7 @@ class LdapUser
 
   def remove_group_multiple(group_members, group_name, user, password)
     result = ''
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     groupdn = process_groups group_name
     memberarray = process_users group_members
     memberarray.each do |m|
@@ -190,7 +190,7 @@ class LdapUser
 
   def search(group_name, user, password)
     result = ''
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     filter = Net::LDAP::Filter.eq('cn', "*#{group_name}*")
     ldap.search(base: SERVERDC, filter: filter, return_result: true) do |entry|
       result << "#{entry.dn}\n"
@@ -204,7 +204,7 @@ class LdapUser
 
   def search_group(fname, lname, user, password)
     result = ''
-    ldap = create_ldap_object(user, password)
+    ldap = login_ldap(user, password)
     filter = Net::LDAP::Filter.eq('member',
                                   "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}")
     ldap.search(base: SERVERDC, filter: filter, return_result: true) do |entry|
