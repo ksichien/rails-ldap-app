@@ -11,7 +11,7 @@ class LdapUsersController < ApplicationController
                                     @ldapuser.dn,
                                     retrieve_ldap_username,
                                     @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'add'
     end
@@ -28,7 +28,7 @@ class LdapUsersController < ApplicationController
                                              @ldapuser.group_name.downcase,
                                              retrieve_ldap_username,
                                              @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'add_multiple'
     end
@@ -46,7 +46,7 @@ class LdapUsersController < ApplicationController
                                  @ldapuser.dn,
                                  retrieve_ldap_username,
                                  @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'new'
     end
@@ -63,7 +63,7 @@ class LdapUsersController < ApplicationController
                                        @ldapuser.group_members,
                                        retrieve_ldap_username,
                                        @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'new_group'
     end
@@ -80,7 +80,7 @@ class LdapUsersController < ApplicationController
                                   @ldapuser.lname.downcase,
                                   retrieve_ldap_username,
                                   @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'delete'
     end
@@ -96,7 +96,7 @@ class LdapUsersController < ApplicationController
       @result = @ldapuser.destroy_group(@ldapuser.group_name.downcase,
                                         retrieve_ldap_username,
                                         @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'delete_group'
     end
@@ -113,7 +113,7 @@ class LdapUsersController < ApplicationController
                                  @ldapuser.lname.downcase,
                                  retrieve_ldap_username,
                                  @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'edit'
     end
@@ -131,7 +131,7 @@ class LdapUsersController < ApplicationController
                                        @ldapuser.dn,
                                        retrieve_ldap_username,
                                        @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'remove'
     end
@@ -148,7 +148,7 @@ class LdapUsersController < ApplicationController
                                                 @ldapuser.group_name.downcase,
                                                 retrieve_ldap_username,
                                                 @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'remove_multiple'
     end
@@ -164,7 +164,7 @@ class LdapUsersController < ApplicationController
       @result = @ldapuser.search(@ldapuser.group_name.downcase,
                                  retrieve_ldap_username,
                                  @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'search'
     end
@@ -181,7 +181,7 @@ class LdapUsersController < ApplicationController
                                        @ldapuser.lname.downcase,
                                        retrieve_ldap_username,
                                        @ldapuser.password)
-      render 'result'
+      render 'shared/result'
     else
       render 'search'
     end

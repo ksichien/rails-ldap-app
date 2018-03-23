@@ -3,7 +3,7 @@
   <h2>Create a new group</h2>
   <div class="col-md-6 col-md-offset-3 jumbotron">
     <%= form_for(@ldapuser, url: create_group_path) do |f| %>
-      <%= render 'shared/ldap_user_error_messages', object: @ldapuser %>
+      <%= render partial: 'error_messages', object: @ldapuser %>
       <%= f.label "Confirm your ldap password" %>
       <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
       <%= f.label "Group Name" %>
