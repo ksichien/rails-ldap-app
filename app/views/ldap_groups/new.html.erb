@@ -1,0 +1,16 @@
+<% provide(:title,"Create Group") %>
+<div class="row">
+  <h2>Create a new group</h2>
+  <div class="col-md-6 col-md-offset-3 jumbotron">
+    <%= form_for(@ldap_group, url: create_group_path) do |f| %>
+      <%= render partial: 'error_messages', object: @ldap_group %>
+      <%= f.label "Confirm your ldap password" %>
+      <%= f.password_field :ldap_password, autocomplete: "off", class: "form-control" %>
+      <%= f.label "Group Name" %>
+      <%= f.text_field :name, autofocus: true, class: "form-control" %>
+      <%= f.label "Group Members" %>
+      <%= f.text_area :users, maxlength: 8192, rows: 10, class: "form-control" %>
+      <%= f.submit "Create", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

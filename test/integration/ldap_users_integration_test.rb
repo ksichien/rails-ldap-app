@@ -62,12 +62,6 @@ class LdapUsersIntegrationTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should get result' do
-    get result_path
-    assert_template 'ldap_users/result'
-    assert_response :success
-  end
-
   test 'should get search' do
     get search_path
     assert_template 'ldap_users/search'

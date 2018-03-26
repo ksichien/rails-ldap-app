@@ -2,12 +2,12 @@
 <div class="row">
   <h2>Search across the entire directory for a group or user</h2>
   <div class="col-md-6 col-md-offset-3 jumbotron">
-    <%= form_for(@ldapuser, url: search_path) do |f| %>
-      <%= render partial: 'error_messages', object: @ldapuser %>
+    <%= form_for(@ldap_search, url: search_path) do |f| %>
+      <%= render partial: 'error_messages', object: @ldap_search %>
       <%= f.label "Confirm your ldap password" %>
-      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+      <%= f.password_field :ldap_password, autocomplete: "off", class: "form-control" %>
       <%= f.label "Group or User" %>
-      <%= f.text_field :group_name, autofocus: true, class: "form-control" %>
+      <%= f.text_field :name, autofocus: true, class: "form-control" %>
       <%= f.submit "Search", class: "btn btn-primary" %>
     <% end %>
   </div>

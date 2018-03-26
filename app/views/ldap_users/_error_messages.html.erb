@@ -1,10 +1,10 @@
-<% if @ldapuser.errors.any? %>
+<% if @ldap_user.errors.any? %>
   <div id="error_explanation">
     <div class="alert alert-danger">
-      The form contains <%= pluralize(@ldapuser.errors.count, "error") %>.
+      The form contains <%= pluralize(@ldap_user.errors.count, "error") %>.
     </div>
     <ul>
-    <% @ldapuser.errors.full_messages.each do |msg| %>
+    <% @ldap_user.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
     <% end %>
     </ul>

@@ -2,16 +2,16 @@
 <div class="row">
   <h2>Add a user to multiple groups</h2>
   <div class="col-md-6 col-md-offset-3 jumbotron">
-    <%= form_for(@ldapuser, url: add_path) do |f| %>
-      <%= render partial: 'error_messages', object: @ldapuser %>
+    <%= form_for(@ldap_user, url: add_groups_path) do |f| %>
+      <%= render partial: 'error_messages', object: @ldap_user %>
       <%= f.label "Confirm your ldap password" %>
-      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+      <%= f.password_field :ldap_password, autocomplete: "off", class: "form-control" %>
       <%= f.label "First Name" %>
       <%= f.text_field :fname, autofocus: true, class: "form-control" %>
       <%= f.label "Last Name" %>
       <%= f.text_field :lname, class: "form-control" %>
       <%= f.label "Groups" %>
-      <%= f.text_area :dn, maxlength: 8192, rows: 10, class: "form-control" %>
+      <%= f.text_area :groups, maxlength: 8192, rows: 10, class: "form-control" %>
       <%= f.submit "Add", class: "btn btn-primary" %>
     <% end %>
   </div>

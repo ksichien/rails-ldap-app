@@ -1,57 +1,38 @@
 class LdapUser
   include ActiveModel::Model
 
-  attr_accessor :fname, :lname, :dn, :group_members, :group_name, :password
+  attr_accessor :fname, :lname, :groups, :ldap_password
 
   validates :fname, length: { maximum: 255 }
   validates :lname, length: { maximum: 255 }
 
   include LdapConnection
+  include LdapProcessing
   include MailHelpdesk
 
-  def add_group(fname, lname, dn, user, password)
+  def add_groups(fname, lname, groups, ldap_username, ldap_password)
     result = ''
-    ldap = login_ldap(user, password)
-    if dn.empty?
+    ldap = login_ldap(ldap_username, ldap_password)
+    if groups.empty?
       result = "No changes were made, no groups were given.\n"
     else
-      grouparray = dn.split("\n")
-      grouparray.each do |g|
-        attrdn = process_groups g
-        ldap.add_attribute attrdn,
+      group_array = groups.split("\n")
+      group_array.each do |g|
+        attr_dn = process_groups g
+        ldap.add_attribute attr_dn,
                            :member,
                            "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
-        result << "Operation add #{fname}.#{lname} to\n#{attrdn}\n " \
+        result << "Operation add #{fname}.#{lname} to\n#{attr_dn}\n " \
                   "result: #{ldap.get_operation_result.message}\n"
       end
       result.to_s
     end
   end
 
-  def add_group_multiple(group_members, group_name, user, password)
-    result = ''
-    ldap = login_ldap(user, password)
-    members = group_members.split("\n")
-    memberarray = []
-    members.each do |m|
-      userdn = "uid=#{m.chomp},#{USEROU},#{SERVERDC}"
-      memberarray << userdn
-    end
-    groupdn = process_groups group_name
-    memberarray.each do |m|
-      ldap.add_attribute groupdn, :member, m
-      username = m.gsub('uid=','')
-      username.gsub!(",#{USEROU},#{SERVERDC}", '')
-      result << "Operation add #{username} to\n#{groupdn}\n result: " \
-                "#{ldap.get_operation_result.message}\n"
-    end
-    result.to_s
-  end
-
-  def create(fname, lname, dn, user, password)
+  def create(fname, lname, groups, ldap_username, ldap_password)
     result = ''
     pwd = generate_ldap_password
-    userdn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
+    user_dn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
     result << "Username: #{fname}.#{lname}\n"
     result << "Password: #{pwd[0]}\n\n"
     result << "All operation results below for diagnostics:\n"
@@ -62,60 +43,39 @@ class LdapUser
       sn: lname.capitalize,
       mail: "#{fname}.#{lname}@#{EMAIL}"
     }
-    ldap = login_ldap(user, password)
-    ldap.add(dn: userdn, attributes: attr)
+    ldap = login_ldap(ldap_username, ldap_password)
+    ldap.add(dn: user_dn, attributes: attr)
     result << "Operation create user #{fname}.#{lname} result: " \
               "#{ldap.get_operation_result.message}\n"
-    ldap.add_attribute userdn, :userPassword, "{CRYPT}#{pwd[1]}"
+    ldap.add_attribute user_dn, :userPassword, "{CRYPT}#{pwd[1]}"
     result << "Operation set password #{pwd[0]} result: " \
               "#{ldap.get_operation_result.message}\n"
-    result << add_group(fname, lname, dn, user, password)
+    result << add_groups(fname, lname, groups, ldap_username, ldap_password)
     result.to_s
   end
 
-  def create_group(group_name, group_members, user, password)
+  def destroy(fname, lname, ldap_username, ldap_password)
     result = ''
-    groupdn = process_groups group_name
-    group_members = 'no-reply' if group_members.empty?
-    memberarray = process_users group_members
-    attr = {
-      objectclass: %w[top groupOfNames],
-      cn: group_name,
-      member: memberarray
-    }
-    ldap = login_ldap(user, password)
-    ldap.add(dn: groupdn, attributes: attr)
-    result << "Operation create group #{group_name} result: " \
-              "#{ldap.get_operation_result.message}\n"
-    result << "The following members were added to the group:\n"
-    memberarray.each do |m|
-      result << "#{m}\n"
-    end
-    result.to_s
-  end
-
-  def destroy(fname, lname, user, password)
-    result = ''
-    removeresult = ''
-    dn = search_group(fname, lname, user, password)
-    ldap = login_ldap(user, password)
+    remove_result = ''
+    dn = LdapSearch.search_group(fname, lname, ldap_username, ldap_password)
+    ldap = login_ldap(ldap_username, ldap_password)
     if dn.empty?
-      removeresult = "No changes were made, no groups were found.\n"
+      remove_result = "No changes were made, no groups were found.\n"
     else
-      grouparray = dn.split("\n")
-      grouparray.each do |g|
-        groupdn = g
+      group_array = dn.split("\n")
+      group_array.each do |g|
+        group_dn = g
         ops = [
           [:delete, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"]
         ]
-        ldap.modify dn: groupdn, operations: ops
-        removeresult << "Operation remove #{fname}.#{lname} from " \
-                        "#{groupdn}\n result: " \
+        ldap.modify dn: group_dn, operations: ops
+        remove_result << "Operation remove #{fname}.#{lname} from " \
+                        "#{group_dn}\n result: " \
                         "#{ldap.get_operation_result.message}\n"
       end
-      removeresult.to_s
+      remove_result.to_s
     end
-    result << removeresult
+    result << remove_result
     filter = Net::LDAP::Filter.eq('uid', "#{fname}.#{lname}")
     ldap.search(base: SERVERDC,
                 filter: filter,
@@ -129,115 +89,36 @@ class LdapUser
     result.to_s
   end
 
-  def destroy_group(group_name, user, password)
-    ldap = login_ldap(user, password)
-    groupdn = process_groups group_name
-    ldap.delete dn: groupdn
-    result = "Operation destroy group\n#{groupdn}\nresult: " \
-             "#{ldap.get_operation_result.message}\n"
-    result.to_s
-  end
-
-  def update(fname, lname, user, password)
+  def update_user(fname, lname, ldap_username, ldap_password)
     pwd = generate_ldap_password
-    userdn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
-    ldap = login_ldap(user, password)
+    user_dn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
+    ldap = login_ldap(ldap_username, ldap_password)
     ops = [
       [:replace, :userPassword, "{CRYPT}#{pwd[1]}"]
     ]
-    ldap.modify dn: userdn, operations: ops
+    ldap.modify dn: user_dn, operations: ops
     result = "Operation set password #{pwd[0]}\nfor user " \
              "#{fname}.#{lname}\nresult: #{ldap.get_operation_result.message}"
     result.to_s
   end
 
-  def remove_group(fname, lname, dn, user, password)
+  def remove_groups(fname, lname, groups, ldap_username, ldap_password)
     result = ''
-    ldap = login_ldap(user, password)
+    ldap = login_ldap(ldap_username, ldap_password)
     if dn.empty?
       result = "No changes were made, no groups were given.\n"
     else
-      grouparray = dn.split("\n")
-      grouparray.each do |g|
-        attrdn = process_groups g
+      group_array = dn.split("\n")
+      group_array.each do |g|
+        attr_dn = process_groups g
         ops = [
           [:delete, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"]
         ]
-        ldap.modify dn: attrdn, operations: ops
-        result << "Operation remove #{fname}.#{lname} from\n#{attrdn}\n " \
+        ldap.modify dn: attr_dn, operations: ops
+        result << "Operation remove #{fname}.#{lname} from\n#{attr_dn}\n " \
                   "result: #{ldap.get_operation_result.message}\n"
       end
       result.to_s
     end
-  end
-
-  def remove_group_multiple(group_members, group_name, user, password)
-    result = ''
-    ldap = login_ldap(user, password)
-    groupdn = process_groups group_name
-    memberarray = process_users group_members
-    memberarray.each do |m|
-      ops = [
-        [:delete, :member, m]
-      ]
-      ldap.modify dn: groupdn, operations: ops
-      username = m.gsub('uid=','')
-      username.gsub!(",#{USEROU},#{SERVERDC}",'')
-      result << "Operation remove #{username} from\n#{groupdn}\n " \
-                "result: #{ldap.get_operation_result.message}\n"
-    end
-    result.to_s
-  end
-
-  def search(group_name, user, password)
-    result = ''
-    ldap = login_ldap(user, password)
-    filter = Net::LDAP::Filter.eq('cn', "*#{group_name}*")
-    ldap.search(base: SERVERDC, filter: filter, return_result: true) do |entry|
-      result << "#{entry.dn}\n"
-    end
-    if result.empty?
-      result << "Operation search directory for '#{group_name}' " \
-                "result: #{ldap.get_operation_result.message}\n"
-    end
-    result.to_s
-  end
-
-  def search_group(fname, lname, user, password)
-    result = ''
-    ldap = login_ldap(user, password)
-    filter = Net::LDAP::Filter.eq('member',
-                                  "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}")
-    ldap.search(base: SERVERDC, filter: filter, return_result: true) do |entry|
-      result << "#{entry.dn}\n"
-    end
-    result.to_s
-  end
-
-  private
-
-  def process_groups(group)
-    path = ''
-    ldapgroup = group.split(',')
-    if ldapgroup[1].nil?
-      path = ldapgroup[0].chomp
-    else
-      path << ldapgroup[0]
-      ldapunits = ldapgroup.drop(1)
-      ldapunits.each do |unit|
-        path << ",ou=#{unit.chomp}"
-      end
-    end
-    "cn=#{path},#{GROUPOU},#{SERVERDC}"
-  end
-
-  def process_users(group)
-    users = group.split("\n")
-    userarray = []
-    users.each do |user|
-      userdn = "uid=#{user.chomp},#{USEROU},#{SERVERDC}"
-      userarray << userdn
-    end
-    userarray
   end
 end
