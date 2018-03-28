@@ -1,12 +1,7 @@
 module LdapProcessing
   private def process_users(users)
     user_array = users.split("\n")
-    result_array = []
-    user_array.each do |user|
-      user_dn = "uid=#{user.chomp},#{USEROU},#{SERVERDC}"
-      result_array << user_dn
-    end
-    result_array
+    user_array.map { |u| "uid=#{u.chomp},#{USEROU},#{SERVERDC}" }
   end
 
   private def process_groups(name)
