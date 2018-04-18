@@ -1,10 +1,17 @@
 class LdapUser
   include ActiveModel::Model
 
-  attr_accessor :fname, :lname, :groups, :ldap_password
+  attr_accessor :fname, :lname, :groups, :source, :target, :ldap_password
 
   validates :fname, length: { maximum: 255 }
   validates :lname, length: { maximum: 255 }
+
+  validates :source,
+            format: { with: /(.+)\.(.+)/,
+                      message: 'username must contain a period' }
+  validates :target,
+            format: { with: /(.+)\.(.+)/,
+                      message: 'username must contain a period' }
 
   include LdapConnection
   include LdapProcessing
@@ -27,6 +34,28 @@ class LdapUser
       end
       result.to_s
     end
+  end
+
+  def copy_groups(source, target, ldap_username, ldap_password)
+    result = ''
+    ldap = ldap_login(ldap_username, ldap_password)
+    groups = LdapSearch.search_group(source.split('.').first,
+                                     source.split('.').last,
+                                     ldap_username,
+                                     ldap_password)
+    if groups.empty?
+      result = "No changes were made, source user did not have any groups.\n"
+    else
+      group_array = groups.split("\n")
+      group_array.pop # remove last element
+      group_array.each do |group|
+        ldap.add_attribute group, :member, "uid=#{target}," \
+                                            "#{USEROU},#{SERVERDC}"
+        result << "Operation add #{target} to\n" \
+                  "#{group}\n result: #{ldap.get_operation_result.message}\n"
+      end
+    end
+    result.to_s
   end
 
   def create(fname, lname, groups, ldap_username, ldap_password)

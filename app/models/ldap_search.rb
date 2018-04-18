@@ -17,10 +17,8 @@ class LdapSearch
     ldap.search(base: SERVERDC, filter: filter, return_result: true) do |entry|
       result << "#{entry.dn}\n"
     end
-    if result.empty?
-      result << "Operation search directory for '#{name}' " \
-                "result: #{ldap.get_operation_result.message}\n"
-    end
+    result << "Operation search directory for '#{name}' " \
+              "result: #{ldap.get_operation_result.message}\n"
     result.to_s
   end
 
@@ -32,6 +30,8 @@ class LdapSearch
     ldap.search(base: SERVERDC, filter: filter, return_result: true) do |entry|
       result << "#{entry.dn}\n"
     end
+    result << "Operation search directory for '#{name}' " \
+              "result: #{ldap.get_operation_result.message}\n"
     result.to_s
   end
 end

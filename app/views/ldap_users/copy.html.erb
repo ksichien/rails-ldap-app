@@ -1,0 +1,16 @@
+<% provide(:title,"Copy Groups") %>
+<div class="row">
+  <h2>Add multiple users to a group</h2>
+  <div class="col-md-6 col-md-offset-3 jumbotron">
+    <%= form_for(@ldap_user, url: copy_groups_path) do |f| %>
+      <%= render partial: 'error_messages', object: @ldap_user %>
+      <%= f.label "Confirm your ldap password" %>
+      <%= f.password_field :ldap_password, autocomplete: "off", class: "form-control" %>
+      <%= f.label "Source user" %>
+      <%= f.text_field :source, autofocus: true, class: "form-control" %>
+      <%= f.label "Target user" %>
+      <%= f.text_field :target, class: "form-control" %>
+      <%= f.submit "Copy", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

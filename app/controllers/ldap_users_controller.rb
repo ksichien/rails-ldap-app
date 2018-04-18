@@ -17,6 +17,23 @@ class LdapUsersController < ApplicationController
     end
   end
 
+  def copy
+    @ldap_user = LdapUser.new
+  end
+
+  def copy_groups
+    @ldap_user = LdapUser.new(ldap_group_params)
+    if @ldap_user.valid?
+      @result = @ldap_user.copy_groups(@ldap_user.source.downcase.strip,
+                                       @ldap_user.target.downcase.strip,
+                                       retrieve_ldap_username,
+                                       @ldap_group.ldap_password)
+      render 'shared/result'
+    else
+      render 'copy'
+    end
+  end
+
   def new
     @ldap_user = LdapUser.new
   end

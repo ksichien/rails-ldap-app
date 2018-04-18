@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   get  'add_groups',    to: 'ldap_users#add'
   post 'add_groups',    to: 'ldap_users#add_groups'
+  get  'copy_groups',   to: 'ldap_users#copy'
+  post 'copy_groups',   to: 'ldap_users#copy_groups'
   get  'create_user',   to: 'ldap_users#new'
   post 'create_user',   to: 'ldap_users#create'
   get  'destroy_user',  to: 'ldap_users#delete'
