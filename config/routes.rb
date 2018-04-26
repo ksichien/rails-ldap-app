@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   post 'destroy_user',  to: 'ldap_users#destroy'
   get  'remove_groups', to: 'ldap_users#remove'
   post 'remove_groups', to: 'ldap_users#remove_groups'
+  get  'search_groups', to: 'ldap_users#search'
+  post 'search_groups', to: 'ldap_users#search_result'
   get  'update_user',   to: 'ldap_users#edit'
   post 'update_user',   to: 'ldap_users#update'
 
@@ -26,6 +28,4 @@ Rails.application.routes.draw do
 
   get  'search',        to: 'ldap_searches#search'
   post 'search',        to: 'ldap_searches#search_result'
-  get  'search_groups',  to: 'ldap_searches#search_groups'
-  post 'search_groups',  to: 'ldap_searches#search_groups_result'
 end

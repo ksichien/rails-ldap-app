@@ -22,7 +22,7 @@ class LdapUsersController < ApplicationController
   end
 
   def copy_groups
-    @ldap_user = LdapUser.new(ldap_group_params)
+    @ldap_user = LdapUser.new(ldap_user_params)
     if @ldap_user.valid?
       @result = @ldap_user.copy_groups(@ldap_user.source.downcase.strip,
                                        @ldap_user.target.downcase.strip,
@@ -41,7 +41,7 @@ class LdapUsersController < ApplicationController
   def create
     @ldap_user = LdapUser.new(ldap_user_params)
     if @ldap_user.valid?
-      @result = @ldap_user.create_user(@ldap_user.fname.downcase.strip,
+      @result = @ldap_user.create(@ldap_user.fname.downcase.strip,
                                        @ldap_user.lname.downcase.strip,
                                        @ldap_user.groups.downcase,
                                        retrieve_ldap_username,
@@ -59,7 +59,7 @@ class LdapUsersController < ApplicationController
   def destroy
     @ldap_user = LdapUser.new(ldap_user_params)
     if @ldap_user.valid?
-      @result = @ldap_user.destroy_user(@ldap_user.fname.downcase.strip,
+      @result = @ldap_user.destroy(@ldap_user.fname.downcase.strip,
                                         @ldap_user.lname.downcase.strip,
                                         retrieve_ldap_username,
                                         @ldap_user.ldap_password)
@@ -76,7 +76,7 @@ class LdapUsersController < ApplicationController
   def update
     @ldap_user = LdapUser.new(ldap_user_params)
     if @ldap_user.valid?
-      @result = @ldap_user.update_user(@ldap_user.fname.downcase.strip,
+      @result = @ldap_user.update(@ldap_user.fname.downcase.strip,
                                        @ldap_user.lname.downcase.strip,
                                        retrieve_ldap_username,
                                        @ldap_user.ldap_password)
@@ -101,6 +101,23 @@ class LdapUsersController < ApplicationController
       render 'shared/result'
     else
       render 'remove'
+    end
+  end
+
+  def search
+    @ldap_user = LdapUser.new
+  end
+
+  def search_result
+    @ldap_user = LdapUser.new(ldap_user_params)
+    if @ldap_user.valid?
+      @result = LdapUser.search_groups(@ldap_user.fname.downcase.strip,
+                                       @ldap_user.lname.downcase.strip,
+                                       retrieve_ldap_username,
+                                       @ldap_user.ldap_password)
+      render 'shared/result'
+    else
+      render 'search'
     end
   end
 

@@ -3,6 +3,8 @@ class LdapUser
 
   attr_accessor :fname, :lname, :groups, :source, :target, :ldap_password
 
+  validates :ldap_password, presence: true
+
   validates :fname, length: { maximum: 255 }
   validates :lname, length: { maximum: 255 }
 
@@ -19,7 +21,7 @@ class LdapUser
 
   def add_groups(fname, lname, groups, ldap_username, ldap_password)
     result = ''
-    ldap = login_ldap(ldap_username, ldap_password)
+    ldap = ldap_login(ldap_username, ldap_password)
     if groups.empty?
       result = "No changes were made, no groups were given.\n"
     else
@@ -39,7 +41,7 @@ class LdapUser
   def copy_groups(source, target, ldap_username, ldap_password)
     result = ''
     ldap = ldap_login(ldap_username, ldap_password)
-    groups = LdapSearch.search_group(source.split('.').first,
+    groups = search_groups(source.split('.').first,
                                      source.split('.').last,
                                      ldap_username,
                                      ldap_password)
@@ -72,7 +74,7 @@ class LdapUser
       sn: lname.capitalize,
       mail: "#{fname}.#{lname}@#{EMAIL}"
     }
-    ldap = login_ldap(ldap_username, ldap_password)
+    ldap = ldap_login(ldap_username, ldap_password)
     ldap.add(dn: user_dn, attributes: attr)
     result << "Operation create user #{fname}.#{lname} result: " \
               "#{ldap.get_operation_result.message}\n"
@@ -86,8 +88,8 @@ class LdapUser
   def destroy(fname, lname, ldap_username, ldap_password)
     result = ''
     remove_result = ''
-    dn = LdapSearch.search_group(fname, lname, ldap_username, ldap_password)
-    ldap = login_ldap(ldap_username, ldap_password)
+    dn = search_groups(fname, lname, ldap_username, ldap_password)
+    ldap = ldap_login(ldap_username, ldap_password)
     if dn.empty?
       remove_result = "No changes were made, no groups were found.\n"
     else
@@ -118,10 +120,10 @@ class LdapUser
     result.to_s
   end
 
-  def update_user(fname, lname, ldap_username, ldap_password)
+  def update(fname, lname, ldap_username, ldap_password)
     pwd = generate_ldap_password
     user_dn = "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
-    ldap = login_ldap(ldap_username, ldap_password)
+    ldap = ldap_login(ldap_username, ldap_password)
     ops = [
       [:replace, :userPassword, "{CRYPT}#{pwd[1]}"]
     ]
@@ -133,7 +135,7 @@ class LdapUser
 
   def remove_groups(fname, lname, groups, ldap_username, ldap_password)
     result = ''
-    ldap = login_ldap(ldap_username, ldap_password)
+    ldap = ldap_login(ldap_username, ldap_password)
     if dn.empty?
       result = "No changes were made, no groups were given.\n"
     else
@@ -149,5 +151,18 @@ class LdapUser
       end
       result.to_s
     end
+  end
+
+  def search_groups(fname, lname, ldap_username, ldap_password)
+    result = ''
+    ldap = ldap_login(ldap_username, ldap_password)
+    filter = Net::LDAP::Filter.eq('member',
+                                  "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}")
+    ldap.search(base: SERVERDC, filter: filter, return_result: true) do |entry|
+      result << "#{entry.dn}\n"
+    end
+    result << "Operation search directory for '#{name}' " \
+              "result: #{ldap.get_operation_result.message}\n"
+    result.to_s
   end
 end

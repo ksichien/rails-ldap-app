@@ -2,8 +2,8 @@
 <div class="row">
   <h2>Search for all group memberships of a user</h2>
   <div class="col-md-6 col-md-offset-3 jumbotron">
-    <%= form_for(@ldap_search, url: search_groups_path) do |f| %>
-      <%= render partial: 'error_messages', object: @ldap_search %>
+    <%= form_for(@ldap_user, url: search_groups_path) do |f| %>
+      <%= render partial: 'error_messages', object: @ldap_user %>
       <%= f.label "Confirm your ldap password" %>
       <%= f.password_field :ldap_password, autocomplete: "off", class: "form-control" %>
       <%= f.label "First Name" %>

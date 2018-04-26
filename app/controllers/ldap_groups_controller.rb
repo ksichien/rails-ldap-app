@@ -20,10 +20,10 @@ class LdapGroupsController < ApplicationController
     @ldap_group = LdapGroup.new
   end
 
-  def create_group
+  def create
     @ldap_group = LdapGroup.new(ldap_group_params)
     if @ldap_group.valid?
-      @result = @ldap_group.create_group(@ldap_group.name.downcase.strip,
+      @result = @ldap_group.create(@ldap_group.name.downcase.strip,
                                          @ldap_group.users.downcase,
                                          retrieve_ldap_username,
                                          @ldap_group.ldap_password)
@@ -37,10 +37,10 @@ class LdapGroupsController < ApplicationController
     @ldap_group = LdapGroup.new
   end
 
-  def destroy_group
+  def destroy
     @ldap_group = LdapGroup.new(ldap_group_params)
     if @ldap_group.valid?
-      @result = @ldap_group.destroy_group(@ldap_group.name.downcase.strip,
+      @result = @ldap_group.destroy(@ldap_group.name.downcase.strip,
                                           retrieve_ldap_username,
                                           @ldap_group.ldap_password)
       render 'shared/result'

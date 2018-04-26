@@ -1,4 +1,6 @@
 module LdapProcessing
+  include LdapConnection
+  
   private def process_users(users)
     user_array = users.split("\n")
     user_array.map { |u| "uid=#{u.chomp},#{USEROU},#{SERVERDC}" }
