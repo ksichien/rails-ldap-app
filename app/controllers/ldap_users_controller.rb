@@ -42,10 +42,10 @@ class LdapUsersController < ApplicationController
     @ldap_user = LdapUser.new(ldap_user_params)
     if @ldap_user.valid?
       @result = @ldap_user.create(@ldap_user.fname.downcase.strip,
-                                       @ldap_user.lname.downcase.strip,
-                                       @ldap_user.groups.downcase,
-                                       retrieve_ldap_username,
-                                       @ldap_user.ldap_password)
+                                  @ldap_user.lname.downcase.strip,
+                                  @ldap_user.groups.downcase,
+                                  retrieve_ldap_username,
+                                  @ldap_user.ldap_password)
       render 'shared/result'
     else
       render 'new'
@@ -60,9 +60,9 @@ class LdapUsersController < ApplicationController
     @ldap_user = LdapUser.new(ldap_user_params)
     if @ldap_user.valid?
       @result = @ldap_user.destroy(@ldap_user.fname.downcase.strip,
-                                        @ldap_user.lname.downcase.strip,
-                                        retrieve_ldap_username,
-                                        @ldap_user.ldap_password)
+                                   @ldap_user.lname.downcase.strip,
+                                   retrieve_ldap_username,
+                                   @ldap_user.ldap_password)
       render 'shared/result'
     else
       render 'delete'
@@ -77,9 +77,9 @@ class LdapUsersController < ApplicationController
     @ldap_user = LdapUser.new(ldap_user_params)
     if @ldap_user.valid?
       @result = @ldap_user.update(@ldap_user.fname.downcase.strip,
-                                       @ldap_user.lname.downcase.strip,
-                                       retrieve_ldap_username,
-                                       @ldap_user.ldap_password)
+                                  @ldap_user.lname.downcase.strip,
+                                  retrieve_ldap_username,
+                                  @ldap_user.ldap_password)
       render 'shared/result'
     else
       render 'edit'

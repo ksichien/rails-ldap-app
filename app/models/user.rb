@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   before_validation :ldap_before_save
   def ldap_before_save
-    Devise::LDAP::Adapter.get_ldap_param(username, 'mail').first
+    self.email = Devise::LDAP::Adapter.get_ldap_param(username, 'mail').first
   end
 
   # solution for remember_token issue
