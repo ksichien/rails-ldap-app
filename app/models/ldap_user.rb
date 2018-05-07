@@ -8,13 +8,6 @@ class LdapUser
   validates :fname, length: { maximum: 255 }
   validates :lname, length: { maximum: 255 }
 
-  validates :source,
-            format: { with: /(.+)\.(.+)/,
-                      message: 'username must contain a period' }
-  validates :target,
-            format: { with: /(.+)\.(.+)/,
-                      message: 'username must contain a period' }
-
   include LdapConnection
   include LdapProcessing
   include MailHelpdesk
@@ -42,14 +35,14 @@ class LdapUser
     result = ''
     ldap = ldap_login(ldap_username, ldap_password)
     groups = search_groups(source.split('.').first,
-                                     source.split('.').last,
-                                     ldap_username,
-                                     ldap_password)
+                           source.split('.').last,
+                           ldap_username,
+                           ldap_password)
     if groups.empty?
       result = "No changes were made, source user did not have any groups.\n"
     else
       group_array = groups.split("\n")
-      group_array.pop # remove last element
+      group_array.pop # remove last element, operation result from search_groups
       group_array.each do |group|
         ldap.add_attribute group, :member, "uid=#{target}," \
                                             "#{USEROU},#{SERVERDC}"
@@ -101,8 +94,8 @@ class LdapUser
         ]
         ldap.modify dn: group_dn, operations: ops
         remove_result << "Operation remove #{fname}.#{lname} from " \
-                        "#{group_dn}\n result: " \
-                        "#{ldap.get_operation_result.message}\n"
+                         "#{group_dn}\n result: " \
+                         "#{ldap.get_operation_result.message}\n"
       end
       remove_result.to_s
     end
