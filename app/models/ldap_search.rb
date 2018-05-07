@@ -1,12 +1,10 @@
 class LdapSearch
   include ActiveModel::Model
 
-  attr_accessor :fname, :lname, :name, :ldap_password
+  attr_accessor :name, :ldap_password
 
   validates :ldap_password, presence: true
 
-  validates :fname, length: { maximum: 255 }
-  validates :lname, length: { maximum: 255 }
   validates :name, length: { maximum: 255 }
 
   include LdapConnection
