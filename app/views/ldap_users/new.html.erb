@@ -1,18 +1,18 @@
 <% provide(:title,"Create User") %>
-<div class="row">
-  <h2>Create a new user</h2>
-  <div class="col-md-6 col-md-offset-3 jumbotron">
+<h2 class="main-heading text-center">Create a new user</h2>
+<div class="justify-content-center row">
+  <div class="col-md-6 jumbotron">
     <%= form_for(@ldap_user, url: create_user_path) do |f| %>
       <%= render partial: 'error_messages', object: @ldap_user %>
       <%= f.label "Confirm your ldap password" %>
-      <%= f.password_field :ldap_password, autocomplete: "off", class: "form-control" %>
+      <%= f.password_field :ldap_password, autocomplete: "off", class: "form-control form-group" %>
       <%= f.label "First Name" %>
-      <%= f.text_field :fname, autofocus: true, class: "form-control" %>
+      <%= f.text_field :fname, autofocus: true, class: "form-control form-group" %>
       <%= f.label "Last Name" %>
-      <%= f.text_field :lname, class: "form-control" %>
+      <%= f.text_field :lname, class: "form-control form-group" %>
       <%= f.label "Groups" %>
-      <%= f.text_area :groups, maxlength: 8192, rows: 10, class: "form-control" %>
-      <%= f.submit "Create", class: "btn btn-primary" %>
+      <%= f.text_area :groups, maxlength: 8192, rows: 10, class: "form-control form-group" %>
+      <%= f.submit "Create", class: "btn btn-block btn-primary" %>
     <% end %>
   </div>
 </div>

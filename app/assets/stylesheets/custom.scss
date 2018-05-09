@@ -1,70 +1,14 @@
-@import "bootstrap-sprockets";
-@import "bootstrap";
-
-/* mixins, variables, etc. */
-
-@mixin box_sizing {
-  -moz-box-sizing:    border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing:         border-box;
-}
-
-/* typography */
-
-h1,h2,h3,h4,h5 {
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-/* universal */
-
 body {
-  padding-top: 60px;
+  padding-top: 3rem;
 }
 
-.center {
-  text-align: center;
+.main-heading {
+  padding: 1.5rem;
 }
 
-/* header */
-
-#logo {
-  float: left;
-  margin-right: 10px;
-  font-size: 1.7em;
-  color: #fff;
-  letter-spacing: -1px;
-  padding-top: 9px;
-  font-weight: bold;
-  &:hover {
-    color: #fff;
-    text-decoration: none;
+#error_explanation {
+  ul {
+    color: red;
+    margin: 0 0 30px 0;
   }
-}
-
-/* forms */
-
-input, textarea, select, .uneditable-input {
-  border: 1px solid #bbb;
-  width: 100%;
-  margin-bottom: 15px;
-  @include box_sizing;
-}
-
-input {
-  height: auto !important;
-}
-
-.checkbox {
-  margin-top: -10px;
-  margin-bottom: 10px;
-  span {
-    margin-left: 20px;
-    font-weight: normal;
-  }
-}
-
-#user_remember_me {
-  width: auto;
-  margin-left: 0;
 }

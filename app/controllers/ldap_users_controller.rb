@@ -29,9 +29,10 @@ class LdapUsersController < ApplicationController
       @result = @ldap_user.copy_groups(@ldap_user.source.downcase.strip,
                                        @ldap_user.target.downcase.strip,
                                        retrieve_ldap_username,
-                                       @ldap_group.ldap_password)
+                                       @ldap_user.ldap_password)
       render 'shared/result'
     else
+      @ldap_user.errors.add(:base, 'both source and target usernames must contain a period.')
       render 'copy'
     end
   end
@@ -113,10 +114,10 @@ class LdapUsersController < ApplicationController
   def search_result
     @ldap_user = LdapUser.new(ldap_user_params)
     if @ldap_user.valid?
-      @result = LdapUser.search_groups(@ldap_user.fname.downcase.strip,
-                                       @ldap_user.lname.downcase.strip,
-                                       retrieve_ldap_username,
-                                       @ldap_user.ldap_password)
+      @result = @ldap_user.search_groups(@ldap_user.fname.downcase.strip,
+                                         @ldap_user.lname.downcase.strip,
+                                         retrieve_ldap_username,
+                                         @ldap_user.ldap_password)
       render 'shared/result'
     else
       render 'search'
@@ -127,6 +128,8 @@ class LdapUsersController < ApplicationController
     params.require(:ldap_user).permit(:fname,
                                       :lname,
                                       :groups,
+                                      :source,
+                                      :target,
                                       :ldap_password)
   end
 end

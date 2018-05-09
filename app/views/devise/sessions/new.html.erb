@@ -1,16 +1,17 @@
-<div class="row">
-  <h2>Log in</h2>
-  <div class="col-md-6 col-md-offset-3 jumbotron">
+<% provide(:title, "Login") %>
+<h2 class="main-heading text-center">Login</h2>
+<div class="justify-content-center row">
+  <div class="col-md-6 jumbotron">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <%= f.label :username %>
-        <%= f.email_field :username, autofocus: true, class: "form-control" %>
+        <%= f.email_field :username, autofocus: true, class: "form-control form-group" %>
         <%= f.label :password %>
-        <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-        <%= f.label :remember_me, class: "checkbox inline" do %>
-          <%= f.check_box :remember_me %>
-          <span>Remember me</span>
-        <% end %>
-        <%= f.submit "Log in", class: "btn btn-primary" %>
+        <%= f.password_field :password, autocomplete: "off", class: "form-control form-group" %>
+        <div class="form-check form-group">
+          <%= f.check_box :remember_me, class: "form-check-input" %>
+          <%= f.label :remember_me, class: "form-check-label "%>
+        </div>
+        <%= f.submit "Log in", class: "btn btn-block btn-primary" %>
     <% end %>
   </div>
 </div>
