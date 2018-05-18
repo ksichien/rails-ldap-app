@@ -1,46 +1,48 @@
 <% provide(:title, "Home") %>
-<h3 class="main-heading text-center">Group Operations</h3>
-<div class="row text-center">
-  <div class="list-group-item col-md-4">
-    <%= link_to "Create a new group", create_group_path, class: 'lead text-info' %>
+<div class="container mb-5">
+  <h3 class="main-heading text-center">Group Operations</h3>
+  <div class="row text-center">
+    <div class="list-group-item col-md-4">
+      <%= link_to "Create a new group", create_group_path, class: 'lead text-info' %>
+    </div>
+    <div class="list-group-item col-md-4">
+      <%= link_to "Add multiple users to a group", add_users_path, class: 'lead text-info' %>
+    </div>
+    <div class="list-group-item col-md-4">
+      <%= link_to "Copy user groups", copy_groups_path, class: 'lead text-info' %>
+    </div>
+    <div class="list-group-item col-md-4">
+        <%= link_to "Delete an existing group", destroy_group_path, class: 'lead text-info' %>
+    </div>
+    <div class="list-group-item col-md-4">
+      <%= link_to "Remove multiple users from a group", remove_users_path, class: 'lead text-info' %>
+    </div>
   </div>
-  <div class="list-group-item col-md-4">
-    <%= link_to "Add multiple users to a group", add_users_path, class: 'lead text-info' %>
+  <h3 class="main-heading text-center">User Operations</h3>
+  <div class="row text-center">
+    <div class="list-group-item col-md-4">
+      <%= link_to "Create a new user", create_user_path, class: 'lead text-info' %>
+    </div>
+    <div class="list-group-item col-md-4">
+      <%= link_to "Add a user to multiple groups", add_groups_path, class: 'lead text-info' %>
+    </div>
+    <div class="list-group-item col-md-4">
+      <%= link_to "Change user password", update_user_path, class: 'lead text-info' %>
+    </div>
+    <div class="list-group-item col-md-4">
+      <%= link_to "Delete an existing user", destroy_user_path, class: 'lead text-info' %>
+    </div>
+    <div class="list-group-item col-md-4">
+      <%= link_to "Remove a user from multiple groups", remove_groups_path, class: 'lead text-info' %>
+    </div>
   </div>
-  <div class="list-group-item col-md-4">
-    <%= link_to "Copy user groups", copy_groups_path, class: 'lead text-info' %>
-  </div>
-  <div class="list-group-item col-md-4">
-      <%= link_to "Delete an existing group", destroy_group_path, class: 'lead text-info' %>
-  </div>
-  <div class="list-group-item col-md-4">
-    <%= link_to "Remove multiple users from a group", remove_users_path, class: 'lead text-info' %>
-  </div>
-</div>
-<h3 class="main-heading text-center">User Operations</h3>
-<div class="row text-center">
-  <div class="list-group-item col-md-4">
-    <%= link_to "Create a new user", create_user_path, class: 'lead text-info' %>
-  </div>
-  <div class="list-group-item col-md-4">
-    <%= link_to "Add a user to multiple groups", add_groups_path, class: 'lead text-info' %>
-  </div>
-  <div class="list-group-item col-md-4">
-    <%= link_to "Change a user's password", update_user_path, class: 'lead text-info' %>
-  </div>
-  <div class="list-group-item col-md-4">
-    <%= link_to "Delete an existing user", destroy_user_path, class: 'lead text-info' %>
-  </div>
-  <div class="list-group-item col-md-4">
-    <%= link_to "Remove a user from multiple groups", remove_groups_path, class: 'lead text-info' %>
-  </div>
-</div>
-<h3 class="main-heading text-center">Search Operations</h3>
-<div class="row text-center">
-  <div class="list-group-item col-md-6">
-    <%= link_to "Search the directory for a group or user", search_path, class: 'lead text-info' %>
-  </div>
-  <div class="list-group-item col-md-6">
-    <%= link_to "Search for all group memberships of a user", search_groups_path, class: 'lead text-info' %>
+  <h3 class="main-heading text-center">Search Operations</h3>
+  <div class="row text-center">
+    <div class="list-group-item col-md-6">
+      <%= link_to "Search the directory for a group or user", search_path, class: 'lead text-info' %>
+    </div>
+    <div class="list-group-item col-md-6">
+      <%= link_to "Search for all group memberships of a user", search_groups_path, class: 'lead text-info' %>
+    </div>
   </div>
 </div>

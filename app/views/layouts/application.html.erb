@@ -10,18 +10,15 @@
     <%= render 'layouts/nav' %>
     <main role="main" class="container">
       <% if notice %>
-        <p class="alert alert-success"><%= notice %></p>
+        <div class="alert alert-success m-3"><%= notice %></div>
       <% end %>
       <% if alert %>
-        <p class="alert alert-danger"><%= alert %></p>
+        <div class="alert alert-danger m-3"><%= alert %></div>
       <% end %>
-      <section class="container">
+      <div>
         <%= yield %>
-      </section>
-      <br>
-      <section class="jumbotron">
-        <%= debug(params) if Rails.env.development? %>
-      </section>
+      </div>
+      <%= debug(params) if Rails.env.development? %>
     </main>
   </body>
 </html>
