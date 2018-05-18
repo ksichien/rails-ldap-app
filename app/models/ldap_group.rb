@@ -12,18 +12,17 @@ class LdapGroup
   include MailHelpdesk
 
   def add_users(name, users, ldap_username, ldap_password)
-    result = ''
     ldap = ldap_login(ldap_username, ldap_password)
     member_array = process_users users
     group_dn = process_groups name
-    member_array.each do |m|
+    result_array = member_array.map do |m|
       ldap.add_attribute group_dn, :member, m
       username = m.gsub('uid=', '')
       username.gsub!(",#{USEROU},#{SERVERDC}", '')
-      result << "Operation add #{username} to\n#{group_dn}\n result: " \
-                "#{ldap.get_operation_result.message}\n"
+      "Operation add #{username} to\n#{group_dn}\n " \
+      "result: #{ldap.get_operation_result.message}\n"
     end
-    result.to_s
+    result_array.join('')
   end
 
   def create(name, users, ldap_username, ldap_password)
@@ -51,26 +50,24 @@ class LdapGroup
     ldap = ldap_login(ldap_username, ldap_password)
     group_dn = process_groups name
     ldap.delete dn: group_dn
-    result = "Operation destroy group\n#{group_dn}\nresult: " \
-             "#{ldap.get_operation_result.message}\n"
-    result.to_s
+    "Operation destroy group\n#{group_dn}\n" \
+    "result: #{ldap.get_operation_result.message}\n"
   end
 
   def remove_users(name, users, ldap_username, ldap_password)
-    result = ''
     ldap = ldap_login(ldap_username, ldap_password)
     member_array = process_users users
     group_dn = process_groups name
-    member_array.each do |m|
+    result_array = member_array.map do |m|
       ops = [
         [:delete, :member, m]
       ]
       ldap.modify dn: group_dn, operations: ops
       username = m.gsub('uid=', '')
       username.gsub!(",#{USEROU},#{SERVERDC}", '')
-      result << "Operation remove #{username} from\n#{group_dn}\n " \
-                "result: #{ldap.get_operation_result.message}\n"
+      "Operation remove #{username} from\n#{group_dn}\n " \
+      "result: #{ldap.get_operation_result.message}\n"
     end
-    result.to_s
+    result_array.join('')
   end
 end

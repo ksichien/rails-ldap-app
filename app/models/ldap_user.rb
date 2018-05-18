@@ -13,44 +13,42 @@ class LdapUser
   include MailHelpdesk
 
   def add_groups(fname, lname, groups, ldap_username, ldap_password)
-    result = ''
     ldap = ldap_login(ldap_username, ldap_password)
     if groups.empty?
-      result = "No changes were made, no groups were given.\n"
+      "No changes were made, no groups were given.\n"
     else
       group_array = groups.split("\n")
-      group_array.each do |g|
+      result_array = group_array.map do |g|
         attr_dn = process_groups g
         ldap.add_attribute attr_dn,
                            :member,
                            "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"
-        result << "Operation add #{fname}.#{lname} to\n#{attr_dn}\n " \
-                  "result: #{ldap.get_operation_result.message}\n"
+        "Operation add #{fname}.#{lname} to\n#{attr_dn}\n " \
+        "result: #{ldap.get_operation_result.message}\n"
       end
-      result.to_s
+      result_array.join('')
     end
   end
 
   def copy_groups(source, target, ldap_username, ldap_password)
-    result = ''
     ldap = ldap_login(ldap_username, ldap_password)
     groups = search_groups(source.split('.').first,
                            source.split('.').last,
                            ldap_username,
                            ldap_password)
     if groups.empty?
-      result = "No changes were made, source user did not have any groups.\n"
+      "No changes were made, source user did not have any groups.\n"
     else
       group_array = groups.split("\n")
       group_array.pop # remove last element, operation result from search_groups
-      group_array.each do |group|
+      result_array = group_array.map do |group|
         ldap.add_attribute group, :member, "uid=#{target}," \
                                             "#{USEROU},#{SERVERDC}"
-        result << "Operation add #{target} to\n" \
-                  "#{group}\n result: #{ldap.get_operation_result.message}\n"
+        "Operation add #{target} to\n#{group}\n " \
+        "result: #{ldap.get_operation_result.message}\n"
       end
+      result_array.join('')
     end
-    result.to_s
   end
 
   def create(fname, lname, groups, ldap_username, ldap_password)
@@ -87,17 +85,16 @@ class LdapUser
       remove_result = "No changes were made, no groups were found.\n"
     else
       group_array = dn.split("\n")
-      group_array.each do |g|
+      result_array = group_array.map do |g|
         group_dn = g
         ops = [
           [:delete, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"]
         ]
         ldap.modify dn: group_dn, operations: ops
-        remove_result << "Operation remove #{fname}.#{lname} from " \
-                         "#{group_dn}\n result: " \
-                         "#{ldap.get_operation_result.message}\n"
+        "Operation remove #{fname}.#{lname} from #{group_dn}\n " \
+        "result: #{ldap.get_operation_result.message}\n"
       end
-      remove_result.to_s
+      remove_result = result_array.join('')
     end
     result << remove_result
     filter = Net::LDAP::Filter.eq('uid', "#{fname}.#{lname}")
@@ -121,28 +118,25 @@ class LdapUser
       [:replace, :userPassword, "{CRYPT}#{pwd[1]}"]
     ]
     ldap.modify dn: user_dn, operations: ops
-    result = "Operation set password #{pwd[0]}\nfor user " \
-             "#{fname}.#{lname}\nresult: #{ldap.get_operation_result.message}"
-    result.to_s
+    "Operation set password #{pwd[0]}\nfor user " \
+    "#{fname}.#{lname}\nresult: #{ldap.get_operation_result.message}"
   end
 
   def remove_groups(fname, lname, groups, ldap_username, ldap_password)
-    result = ''
     ldap = ldap_login(ldap_username, ldap_password)
     if dn.empty?
-      result = "No changes were made, no groups were given.\n"
+      "No changes were made, no groups were given.\n"
     else
       group_array = dn.split("\n")
-      group_array.each do |g|
+      result_array = group_array.each do |g|
         attr_dn = process_groups g
         ops = [
           [:delete, :member, "uid=#{fname}.#{lname},#{USEROU},#{SERVERDC}"]
         ]
         ldap.modify dn: attr_dn, operations: ops
-        result << "Operation remove #{fname}.#{lname} from\n#{attr_dn}\n " \
-                  "result: #{ldap.get_operation_result.message}\n"
+        "Operation remove #{fname}.#{lname} from\n#{attr_dn}\n " \
+        "result: #{ldap.get_operation_result.message}\n"
       end
-      result.to_s
     end
   end
 
