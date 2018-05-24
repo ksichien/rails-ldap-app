@@ -1,12 +1,12 @@
 module LdapProcessing
   include LdapConnection
 
-  private def process_users(users)
+  def process_users(users)
     user_array = users.split("\n")
     user_array.map { |u| "uid=#{u.chomp},#{USEROU},#{SERVERDC}" }
   end
 
-  private def process_groups(name)
+  def process_groups(name)
     path = ''
     ldap_group = name.split(',')
     if ldap_group[1].nil?

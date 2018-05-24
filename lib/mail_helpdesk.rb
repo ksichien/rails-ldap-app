@@ -1,5 +1,5 @@
 module MailHelpdesk
-  private def mail_uuid(name, uuid)
+  def mail_uuid(name, uuid)
     msg = "Subject: Account #{name} has been deleted.\n\n" \
           "The account's entryUUID is #{uuid}."
     smtp = Net::SMTP.new "smtp.#{Figaro.env.domain}", 587
